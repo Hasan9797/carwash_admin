@@ -1,0 +1,71 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Services;
+
+use App\DTO\OrderCreateDTO;
+use App\DTO\OrderFilterDTO;
+use App\Enums\OrderStatus;
+use App\Models\Car;
+use App\Models\Order;
+use App\Repositories\Contracts\CategoryRepositoryInterface;
+use App\Repositories\Contracts\OrderRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use InvalidArgumentException;
+
+class OrderService
+{
+    public function __construct(
+        protected OrderRepositoryInterface $orderRepository,
+        protected CategoryRepositoryInterface $categoryRepository,
+        protected DashboardService $dashboardService,
+    ) {}
+
+    public function paginate(OrderFilterDTO $filter): LengthAwarePaginator
+    {
+        return $this->orderRepository->paginate($filter);
+    }
+
+    public function getById(int $id): ?Order
+    {
+        return $this->orderRepository->findById($id);
+    }
+
+    public function create(OrderCreateDTO $dto): Order
+    {
+        $category = $this->categoryRepository->findById($dto->categoryId);
+        if (! $category) {
+            throw new InvalidArgumentException('Tanlangan yuvish kategoriyasi topilmadi.');
+        }
+
+        $normalizedPlate = Car::normalizePlateNumber($dto->plateNumber);
+
+        $order = $this->orderRepository->create([
+            'car_id' => $dto->carId,
+            'plate_number' => $normalizedPlate,
+            'category_id' => $category->id,
+            'operator_id' => $dto->operatorId,
+            'washer_id' => $dto->washerId,
+            'region_id' => $dto->regionId,
+            'price' => $category->price,
+            'status' => OrderStatus::NEW,
+            'started_at' => null,
+            'finished_at' => null,
+        ]);
+
+        $this->dashboardService->clearCache();
+
+        return $order;
+    }
+
+    public function updateStatus(int $id, OrderStatus $status): bool
+    {
+        $updated = $this->orderRepository->updateStatus($id, $status);
+        if ($updated) {
+            $this->dashboardService->clearCache();
+        }
+
+        return $updated;
+    }
+}
