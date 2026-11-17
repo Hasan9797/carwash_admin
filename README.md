@@ -12,7 +12,7 @@ Senior Laravel darajasida noldan ishlab chiqilgan, zamonaviy va kengaytiriluvchi
 - **Kesh va Navbatlar (Queue/Cache/Session):** Redis (`predis/predis`, Cache: DB 1, Queue: DB 2, Session: DB 3)
 - **Frontend (Monolit):** Blade + Tailwind CSS (v4 Vite) + Alpine.js + Chart.js
 - **Eksport:** `maatwebsite/excel` (Excel xlsx eksport)
-- **Sifat va Testlar:** Pest PHP (`tests: 16 passed, 93 assertions`), Laravel Pint (PSR-12)
+- **Sifat va Testlar:** Pest PHP (`tests: 17 passed, 102 assertions`), Laravel Pint (PSR-12)
 - **Enum & Indexing:** `UserRole` va `OrderStatus` DB'da `tinyInteger` (`int`), ko'p tilli label'lar (`uz`, `en`, `ru`)
 - **Debug:** `barryvdh/laravel-debugbar`
 
@@ -150,6 +150,30 @@ php artisan queue:work redis --queue=default --tries=3
 php artisan serve
 ```
 Brauzerda oching: `http://localhost:8000`
+
+### 8. Production muhitiga chiqarish (Deployment checklist)
+
+Production serverda maksimal tezlik va xavfsizlikni ta'minlash bo'yicha qadamlar:
+
+```bash
+# 1. Bog'liqliklarni optimallashtirib o'rnatish
+composer install --no-dev --optimize-autoloader
+npm ci && npm run build
+
+# 2. Fayllar saqlash havzasi havolasini yaratish
+php artisan storage:link
+
+# 3. Bazani migratsiya qilish
+php artisan migrate --force
+
+# 4. Keshlarni optimallashtirish
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# 5. Navbat ishchisi (Supervisor yoki Systemd orqali orqa fonda)
+php artisan queue:work redis --queue=default --tries=3 --timeout=60
+```
 
 ---
 

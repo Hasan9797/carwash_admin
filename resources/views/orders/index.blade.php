@@ -1,4 +1,7 @@
-<x-app-layout>
+<x-app-layout :breadcrumbs="[
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Zakazlar'],
+]">
     <x-slot name="header">
         Zakazlar boshqaruvi
     </x-slot>

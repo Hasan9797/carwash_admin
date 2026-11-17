@@ -1,4 +1,7 @@
-<x-app-layout>
+<x-app-layout :breadcrumbs="[
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Kameradagi mashinalar'],
+]">
     <x-slot name="header">
         Kameradan aniqlangan mashinalar
     </x-slot>

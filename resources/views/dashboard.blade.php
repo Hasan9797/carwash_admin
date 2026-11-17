@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Boshqaruv paneli">
     <x-slot name="header">
         Boshqaruv paneli (Dashboard)
     </x-slot>
@@ -6,8 +6,8 @@
     <!-- Yuqori qism: Xush kelibsiz va tezkor harakatlar -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h2 class="text-xl font-bold text-slate-900">Salom, {{ auth()->user()->name }}! 👋</h2>
-            <p class="text-xs text-slate-500">Bugungi avtomoyka faoliyati va asosiy ko'rsatkichlar</p>
+            <h2 class="text-xl font-bold text-slate-900">Boshqaruv paneli</h2>
+            <p class="text-xs text-slate-500">Salom, {{ auth()->user()->name }}! 👋 Bugungi avtomoyka faoliyati va asosiy ko'rsatkichlar</p>
         </div>
         <div class="flex items-center gap-2">
             <a href="{{ route('orders.create') }}">

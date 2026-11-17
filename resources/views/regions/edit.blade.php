@@ -1,4 +1,9 @@
-<x-app-layout>
+<x-app-layout :breadcrumbs="[
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Tizim ma\'muriyati'],
+    ['label' => 'Filiallar', 'url' => route('regions.index')],
+    ['label' => 'Tahrirlash: ' . $region->name],
+]">
     <x-slot name="header">
         Filialni tahrirlash
     </x-slot>

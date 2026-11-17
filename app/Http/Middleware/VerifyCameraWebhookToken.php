@@ -13,7 +13,7 @@ class VerifyCameraWebhookToken
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $configuredToken = (string) config('services.camera.webhook_token', env('CAMERA_WEBHOOK_TOKEN', ''));
+        $configuredToken = (string) config('services.camera.webhook_token', '');
         $headerToken = (string) $request->header('X-Webhook-Token', '');
 
         if ($configuredToken === '' || ! hash_equals($configuredToken, $headerToken)) {

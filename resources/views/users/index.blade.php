@@ -1,7 +1,8 @@
-<x-app-layout>
-    <x-slot name="header">
-        Foydalanuvchilar boshqaruvi
-    </x-slot>
+<x-app-layout :breadcrumbs="[
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Tizim ma\'muriyati'],
+    ['label' => 'Foydalanuvchilar'],
+]">
 
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>

@@ -1,7 +1,9 @@
-<x-app-layout>
-    <x-slot name="header">
-        Foydalanuvchini tahrirlash
-    </x-slot>
+<x-app-layout :breadcrumbs="[
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Tizim ma\'muriyati'],
+    ['label' => 'Foydalanuvchilar', 'url' => route('users.index')],
+    ['label' => 'Tahrirlash: ' . $user->name],
+]">
 
     <div class="max-w-2xl mx-auto">
         <div class="mb-6 flex items-center justify-between">

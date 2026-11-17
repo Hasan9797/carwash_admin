@@ -1,4 +1,8 @@
-<x-app-layout>
+<x-app-layout :breadcrumbs="[
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Hisobotlar', 'url' => route('reports.category')],
+    ['label' => 'Xizmat turlari'],
+]">
     <x-slot name="header">
         Hisobotlar: Xizmat turlari bo'yicha
     </x-slot>

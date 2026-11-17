@@ -1,4 +1,8 @@
-<x-app-layout>
+<x-app-layout :breadcrumbs="[
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Kameradagi mashinalar', 'url' => route('cars.index')],
+    ['label' => $car->plate_number],
+]">
     <x-slot name="header">
         Avtomobil tafsilotlari
     </x-slot>

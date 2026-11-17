@@ -1,4 +1,9 @@
-<x-app-layout>
+<x-app-layout :breadcrumbs="[
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Tizim ma\'muriyati'],
+    ['label' => 'Xizmat turlari', 'url' => route('categories.index')],
+    ['label' => 'Yangi xizmat turi'],
+]">
     <x-slot name="header">
         Yangi xizmat turi qo'shish
     </x-slot>

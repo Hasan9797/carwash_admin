@@ -12,6 +12,8 @@ use App\Models\Order;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 
 class OrderService
@@ -41,31 +43,50 @@ class OrderService
 
         $normalizedPlate = Car::normalizePlateNumber($dto->plateNumber);
 
-        $order = $this->orderRepository->create([
-            'car_id' => $dto->carId,
-            'plate_number' => $normalizedPlate,
-            'category_id' => $category->id,
-            'operator_id' => $dto->operatorId,
-            'washer_id' => $dto->washerId,
-            'region_id' => $dto->regionId,
-            'price' => $category->price,
-            'status' => OrderStatus::NEW,
-            'started_at' => null,
-            'finished_at' => null,
-        ]);
+        return DB::transaction(function () use ($dto, $category, $normalizedPlate) {
+            $order = $this->orderRepository->create([
+                'car_id' => $dto->carId,
+                'plate_number' => $normalizedPlate,
+                'category_id' => $category->id,
+                'operator_id' => $dto->operatorId,
+                'washer_id' => $dto->washerId,
+                'region_id' => $dto->regionId,
+                'price' => $category->price,
+                'status' => OrderStatus::NEW,
+                'started_at' => null,
+                'finished_at' => null,
+            ]);
 
-        $this->dashboardService->clearCache();
+            $this->dashboardService->clearCache();
 
-        return $order;
+            return $order;
+        });
     }
 
     public function updateStatus(int $id, OrderStatus $status): bool
     {
-        $updated = $this->orderRepository->updateStatus($id, $status);
-        if ($updated) {
-            $this->dashboardService->clearCache();
+        $order = $this->orderRepository->findById($id);
+        if (! $order) {
+            return false;
         }
 
-        return $updated;
+        if (! $order->status->canTransitionTo($status)) {
+            Log::warning('Noto\'g\'ri status o\'tishi rad etildi', [
+                'order_id' => $id,
+                'current_status' => $order->status->value,
+                'attempted_status' => $status->value,
+            ]);
+
+            return false;
+        }
+
+        return DB::transaction(function () use ($id, $status) {
+            $updated = $this->orderRepository->updateStatus($id, $status);
+            if ($updated) {
+                $this->dashboardService->clearCache();
+            }
+
+            return $updated;
+        });
     }
 }

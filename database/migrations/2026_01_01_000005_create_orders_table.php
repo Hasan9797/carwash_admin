@@ -25,6 +25,7 @@ return new class extends Migration
             $table->timestamp('finished_at')->nullable();
             $table->timestamps();
 
+            $table->index('plate_number');
             $table->index('status');
             $table->index('created_at');
             $table->index('operator_id');

@@ -72,4 +72,21 @@ test('order service updates status properly and records timestamps', function ()
 
     expect($order->status)->toBe(OrderStatus::DONE);
     expect($order->finished_at)->not->toBeNull();
+
+    // DONE holatidan boshqa holatga o'tishni rad etishi kerak (terminal state)
+    $failedRevert = $orderService->updateStatus($order->id, OrderStatus::NEW);
+    expect($failedRevert)->toBeFalse();
+    expect($order->fresh()->status)->toBe(OrderStatus::DONE);
+});
+
+test('cancelled order cannot transition to done or in progress', function () {
+    $order = Order::factory()->create([
+        'status' => OrderStatus::CANCELLED,
+    ]);
+
+    $orderService = app(OrderService::class);
+    $result = $orderService->updateStatus($order->id, OrderStatus::DONE);
+
+    expect($result)->toBeFalse();
+    expect($order->fresh()->status)->toBe(OrderStatus::CANCELLED);
 });

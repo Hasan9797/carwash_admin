@@ -58,3 +58,16 @@ test('operator cannot access admin-only users crud', function () {
 
     $response->assertStatus(403);
 });
+
+test('admin can view users index page with breadcrumbs and title', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->get('/users');
+
+    $response->assertStatus(200)
+        ->assertSee('Dashboard')
+        ->assertSee("Tizim ma'muriyati")
+        ->assertSee('Foydalanuvchilar')
+        ->assertSee('Xodimlar va foydalanuvchilar')
+        ->assertSee('<title>Foydalanuvchilar - ', false);
+});

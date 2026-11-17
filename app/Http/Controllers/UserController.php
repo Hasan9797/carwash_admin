@@ -10,6 +10,7 @@ use App\Services\RegionService;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -84,16 +85,20 @@ class UserController extends Controller
 
     public function destroy(int $id): RedirectResponse
     {
-        if (auth()->id() === $id) {
+        if (Auth::id() === $id) {
             return back()->with('error', 'O\'z hisobingizni o\'chira olmaysiz.');
         }
 
-        $deleted = $this->userService->delete($id);
+        try {
+            $deleted = $this->userService->delete($id);
 
-        if (! $deleted) {
-            return back()->with('error', 'Foydalanuvchini o\'chirishda xatolik yuz berdi.');
+            if (! $deleted) {
+                return back()->with('error', 'Foydalanuvchi topilmadi yoki o\'chirilmadi.');
+            }
+
+            return redirect()->route('users.index')->with('success', 'Foydalanuvchi muvaffaqiyatli o\'chirildi.');
+        } catch (\Throwable) {
+            return back()->with('error', 'Ushbu foydalanuvchiga bog\'langan zakazlar mavjud bo\'lgani uchun uni o\'chirib bo\'lmaydi.');
         }
-
-        return redirect()->route('users.index')->with('success', 'Foydalanuvchi muvaffaqiyatli o\'chirildi.');
     }
 }

@@ -15,9 +15,11 @@ return new class extends Migration
             $table->string('plate_number', 32)->index();
             $table->string('camera_id', 64)->nullable();
             $table->string('image_path')->nullable();
-            $table->timestamp('detected_at')->useCurrent();
+            $table->timestamp('detected_at')->useCurrent()->index();
             $table->json('raw_payload')->nullable();
             $table->timestamps();
+
+            $table->index(['plate_number', 'detected_at']);
         });
     }
 

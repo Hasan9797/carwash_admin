@@ -1,4 +1,9 @@
-<x-app-layout>
+<x-app-layout :breadcrumbs="[
+    ['label' => 'Dashboard', 'url' => route('dashboard')],
+    ['label' => 'Tizim ma\'muriyati'],
+    ['label' => 'Xizmat turlari', 'url' => route('categories.index')],
+    ['label' => 'Tahrirlash: ' . $category->name],
+]">
     <x-slot name="header">
         Xizmat turini tahrirlash
     </x-slot>

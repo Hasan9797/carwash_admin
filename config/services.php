@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'camera' => [
+        'webhook_token' => env('CAMERA_WEBHOOK_TOKEN'),
+    ],
+
 ];

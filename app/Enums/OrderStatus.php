@@ -92,4 +92,17 @@ enum OrderStatus: int
             self::CANCELLED => 'bg-rose-100 text-rose-800 border-rose-200',
         };
     }
+
+    public function canTransitionTo(self $target): bool
+    {
+        if ($this === $target) {
+            return true;
+        }
+
+        return match ($this) {
+            self::NEW => in_array($target, [self::IN_PROGRESS, self::CANCELLED], true),
+            self::IN_PROGRESS => in_array($target, [self::DONE, self::CANCELLED], true),
+            self::DONE, self::CANCELLED => false,
+        };
+    }
 }

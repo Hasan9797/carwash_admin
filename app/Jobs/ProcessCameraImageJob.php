@@ -16,6 +16,12 @@ class ProcessCameraImageJob implements ShouldQueue
 {
     use Queueable;
 
+    public int $tries = 3;
+
+    public int $timeout = 30;
+
+    public int $backoff = 5;
+
     public function __construct(
         public int $carId,
         public string $imageData,

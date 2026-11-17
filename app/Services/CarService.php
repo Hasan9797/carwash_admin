@@ -11,6 +11,8 @@ use App\Repositories\Contracts\CarRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CarService
@@ -32,41 +34,47 @@ class CarService
             'detected_at' => $dto->detectedAt?->toIso8601String(),
         ]);
 
-        // Idempotency: Oxirgi 2 daqiqa ichida shu raqam kelsa, qayta yaratmaymiz
-        $existing = $this->carRepository->findRecentByPlate($normalizedPlate, 2);
-        if ($existing) {
-            Log::channel('camera')->info('Duplicate plate detected within 2 minutes. Idempotent skip.', [
-                'car_id' => $existing->id,
-                'plate_number' => $normalizedPlate,
-            ]);
+        $lock = Cache::lock('cam_reg_lock_'.$normalizedPlate, 5);
 
-            return [
-                'car' => $existing,
-                'created' => false,
-            ];
-        }
+        return $lock->block(3, function () use ($dto, $normalizedPlate) {
+            // Idempotency: Oxirgi 2 daqiqa ichida shu raqam kelsa, qayta yaratmaymiz
+            $existing = $this->carRepository->findRecentByPlate($normalizedPlate, 2);
+            if ($existing) {
+                Log::channel('camera')->info('Duplicate plate detected within 2 minutes. Idempotent skip.', [
+                    'car_id' => $existing->id,
+                    'plate_number' => $normalizedPlate,
+                ]);
 
-        $car = $this->carRepository->create([
-            'plate_number' => $normalizedPlate,
-            'camera_id' => $dto->cameraId,
-            'image_path' => null,
-            'detected_at' => $dto->detectedAt ?? Carbon::now(),
-            'raw_payload' => $dto->rawPayload,
-        ]);
+                return [
+                    'car' => $existing,
+                    'created' => false,
+                ];
+            }
 
-        if (! empty($dto->image)) {
-            ProcessCameraImageJob::dispatch($car->id, $dto->image);
-        }
+            return DB::transaction(function () use ($dto, $normalizedPlate) {
+                $car = $this->carRepository->create([
+                    'plate_number' => $normalizedPlate,
+                    'camera_id' => $dto->cameraId,
+                    'image_path' => null,
+                    'detected_at' => $dto->detectedAt ?? Carbon::now(),
+                    'raw_payload' => $dto->rawPayload,
+                ]);
 
-        Log::channel('camera')->info('New car registered from camera successfully', [
-            'car_id' => $car->id,
-            'plate_number' => $car->plate_number,
-        ]);
+                if (! empty($dto->image)) {
+                    ProcessCameraImageJob::dispatch($car->id, $dto->image);
+                }
 
-        return [
-            'car' => $car,
-            'created' => true,
-        ];
+                Log::channel('camera')->info('New car registered from camera successfully', [
+                    'car_id' => $car->id,
+                    'plate_number' => $car->plate_number,
+                ]);
+
+                return [
+                    'car' => $car,
+                    'created' => true,
+                ];
+            });
+        });
     }
 
     public function paginate(?string $search = null, int $perPage = 15): LengthAwarePaginator
