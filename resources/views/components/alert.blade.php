@@ -4,10 +4,10 @@
 
 @php
     $classes = match($type) {
-        'success' => 'bg-emerald-50 border-emerald-200 text-emerald-800',
-        'danger', 'error' => 'bg-rose-50 border-rose-200 text-rose-800',
-        'warning' => 'bg-amber-50 border-amber-200 text-amber-800',
-        default => 'bg-blue-50 border-blue-200 text-blue-800',
+        'success' => 'bg-success-soft border-success/30 text-success',
+        'danger', 'error' => 'bg-danger-soft border-danger/30 text-danger',
+        'warning' => 'bg-warning-soft border-warning/30 text-warning',
+        default => 'bg-info-soft border-info/30 text-info',
     };
 @endphp
 

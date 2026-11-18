@@ -113,7 +113,7 @@ class OrderRepository implements OrderRepositoryInterface
         for ($i = 6; $i >= 0; $i--) {
             $date = Carbon::today()->subDays($i);
             $dateString = $date->toDateString();
-            $labels[] = $date->locale('uz')->isoFormat('DD MMM');
+            $labels[] = $date->locale(carbon_locale())->isoFormat('DD MMM');
             $values[] = (int) ($records[$dateString] ?? 0);
         }
 
@@ -125,11 +125,18 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function reportByCategory(ReportFilterDTO $filter): Collection
     {
+        $locale = app()->getLocale();
+        $titleExpression = match ($locale) {
+            'ru' => "COALESCE(NULLIF(categories.name_ru, ''), categories.name_uz)",
+            'uz_Cyrl', 'crl' => "COALESCE(NULLIF(categories.name_crl, ''), categories.name_uz)",
+            default => 'categories.name_uz',
+        };
+
         $query = DB::table('orders')
             ->join('categories', 'orders.category_id', '=', 'categories.id')
             ->select([
                 'categories.id',
-                'categories.name as title',
+                DB::raw("{$titleExpression} as title"),
                 DB::raw('COUNT(orders.id) as orders_count'),
                 DB::raw('COALESCE(SUM(orders.price), 0) as total_amount'),
                 DB::raw('COALESCE(AVG(orders.price), 0) as average_amount'),
@@ -138,7 +145,7 @@ class OrderRepository implements OrderRepositoryInterface
 
         $this->applyReportFilters($query, $filter);
 
-        return $query->groupBy('categories.id', 'categories.name')
+        return $query->groupBy('categories.id', 'categories.name_uz', 'categories.name_ru', 'categories.name_crl')
             ->orderByDesc('total_amount')
             ->get();
     }
@@ -160,7 +167,12 @@ class OrderRepository implements OrderRepositoryInterface
 
         return $query->groupBy('regions.id', 'regions.name')
             ->orderByDesc('total_amount')
-            ->get();
+            ->get()
+            ->map(function ($row) {
+                $row->title = $this->decodeTranslatable($row->title);
+
+                return $row;
+            });
     }
 
     public function reportByOperator(ReportFilterDTO $filter): Collection
@@ -182,7 +194,12 @@ class OrderRepository implements OrderRepositoryInterface
 
         return $query->groupBy('users.id', 'users.name', 'regions.name')
             ->orderByDesc('total_amount')
-            ->get();
+            ->get()
+            ->map(function ($row) {
+                $row->region_name = $this->decodeTranslatable($row->region_name);
+
+                return $row;
+            });
     }
 
     public function reportByWasher(ReportFilterDTO $filter): Collection
@@ -204,7 +221,28 @@ class OrderRepository implements OrderRepositoryInterface
 
         return $query->groupBy('users.id', 'users.name', 'regions.name')
             ->orderByDesc('total_amount')
-            ->get();
+            ->get()
+            ->map(function ($row) {
+                $row->region_name = $this->decodeTranslatable($row->region_name);
+
+                return $row;
+            });
+    }
+
+    protected function decodeTranslatable(?string $value): string
+    {
+        if (! $value) {
+            return '';
+        }
+
+        $decoded = json_decode($value, true);
+        if (is_array($decoded)) {
+            $locale = app()->getLocale();
+
+            return (string) (! empty($decoded[$locale]) ? $decoded[$locale] : ($decoded['uz'] ?? ''));
+        }
+
+        return $value;
     }
 
     private function applyReportFilters($query, ReportFilterDTO $filter): void

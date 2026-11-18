@@ -28,6 +28,12 @@ enum OrderStatus: int
                 self::DONE => 'Завершен',
                 self::CANCELLED => 'Отменен',
             },
+            'uz_Cyrl' => match ($this) {
+                self::NEW => 'Янги',
+                self::IN_PROGRESS => 'Жараёнда',
+                self::DONE => 'Бажарилди',
+                self::CANCELLED => 'Бекор қилинди',
+            },
             default => match ($this) {
                 self::NEW => 'Yangi',
                 self::IN_PROGRESS => 'Jarayonda',
@@ -86,10 +92,10 @@ enum OrderStatus: int
     public function badgeClass(): string
     {
         return match ($this) {
-            self::NEW => 'bg-sky-100 text-sky-800 border-sky-200',
-            self::IN_PROGRESS => 'bg-amber-100 text-amber-800 border-amber-200',
-            self::DONE => 'bg-emerald-100 text-emerald-800 border-emerald-200',
-            self::CANCELLED => 'bg-rose-100 text-rose-800 border-rose-200',
+            self::NEW => 'bg-info-soft text-info border-info/30',
+            self::IN_PROGRESS => 'bg-warning-soft text-warning border-warning/30',
+            self::DONE => 'bg-success-soft text-success border-success/30',
+            self::CANCELLED => 'bg-danger-soft text-danger border-danger/30',
         };
     }
 

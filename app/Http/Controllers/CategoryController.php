@@ -33,14 +33,14 @@ class CategoryController extends Controller
     {
         $this->categoryService->create($request->validated());
 
-        return redirect()->route('categories.index')->with('success', 'Xizmat turi muvaffaqiyatli qo\'shildi.');
+        return redirect()->route('categories.index')->with('success', __('common.category_created'));
     }
 
     public function edit(int $id): View|RedirectResponse
     {
         $category = $this->categoryService->getById($id);
         if (! $category) {
-            return redirect()->route('categories.index')->with('error', 'Xizmat turi topilmadi.');
+            return redirect()->route('categories.index')->with('error', __('common.category_not_found'));
         }
 
         return view('categories.edit', [
@@ -53,10 +53,10 @@ class CategoryController extends Controller
         $updated = $this->categoryService->update($id, $request->validated());
 
         if (! $updated) {
-            return back()->with('error', 'Xizmat turini yangilab bo\'lmadi.');
+            return back()->with('error', __('common.category_cannot_update'));
         }
 
-        return redirect()->route('categories.index')->with('success', 'Xizmat turi muvaffaqiyatli yangilandi.');
+        return redirect()->route('categories.index')->with('success', __('common.category_updated'));
     }
 
     public function destroy(int $id): RedirectResponse
@@ -65,12 +65,12 @@ class CategoryController extends Controller
             $deleted = $this->categoryService->delete($id);
 
             if (! $deleted) {
-                return back()->with('error', 'Xizmat turini o\'chirib bo\'lmadi.');
+                return back()->with('error', __('common.category_cannot_delete'));
             }
 
-            return redirect()->route('categories.index')->with('success', 'Xizmat turi o\'chirildi.');
+            return redirect()->route('categories.index')->with('success', __('common.category_deleted'));
         } catch (\Throwable) {
-            return back()->with('error', 'Ushbu xizmat turiga bog\'langan zakazlar mavjud bo\'lgani uchun uni o\'chirib bo\'lmaydi.');
+            return back()->with('error', __('common.category_cannot_delete_has_orders'));
         }
     }
 }

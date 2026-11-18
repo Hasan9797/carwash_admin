@@ -12,7 +12,7 @@
 
 <div class="space-y-1.5">
     @if($label)
-        <label for="{{ $id }}" class="block text-xs font-medium text-slate-700">
+        <label for="{{ $id }}" class="block text-xs font-medium text-content">
             {{ $label }}
         </label>
     @endif
@@ -21,14 +21,14 @@
         id="{{ $id }}"
         {{ $disabled ? 'disabled' : '' }}
         {{ $attributes->merge([
-            'class' => 'w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 disabled:bg-slate-50 disabled:text-slate-500' . ($errors->has($name) ? ' border-rose-500 focus:border-rose-500 focus:ring-rose-500/20' : '')
+            'class' => 'w-full rounded-lg border border-border bg-surface px-3.5 py-2 text-sm text-content focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:bg-surface-2 disabled:text-muted' . ($errors->has($name) ? ' border-danger focus:border-danger focus:ring-danger/20' : '')
         ]) }}
     >
         {{ $slot }}
     </select>
     @if($name && $errors->has($name))
-        <p class="text-xs text-rose-600 mt-1">{{ $errors->first($name) }}</p>
+        <p class="text-xs text-danger mt-1">{{ $errors->first($name) }}</p>
     @elseif($error)
-        <p class="text-xs text-rose-600 mt-1">{{ $error }}</p>
+        <p class="text-xs text-danger mt-1">{{ $error }}</p>
     @endif
 </div>

@@ -53,14 +53,14 @@ class UserController extends Controller
     {
         $this->userService->create($request->validated());
 
-        return redirect()->route('users.index')->with('success', 'Foydalanuvchi muvaffaqiyatli yaratildi.');
+        return redirect()->route('users.index')->with('success', __('common.user_created'));
     }
 
     public function edit(int $id): View|RedirectResponse
     {
         $user = $this->userService->getById($id);
         if (! $user) {
-            return redirect()->route('users.index')->with('error', 'Foydalanuvchi topilmadi.');
+            return redirect()->route('users.index')->with('error', __('common.user_not_found'));
         }
 
         $regions = $this->regionService->listActive();
@@ -77,28 +77,28 @@ class UserController extends Controller
         $updated = $this->userService->update($id, $request->validated());
 
         if (! $updated) {
-            return back()->with('error', 'Foydalanuvchini yangilab bo\'lmadi.');
+            return back()->with('error', __('common.user_cannot_update'));
         }
 
-        return redirect()->route('users.index')->with('success', 'Foydalanuvchi ma\'lumotlari yangilandi.');
+        return redirect()->route('users.index')->with('success', __('common.user_updated'));
     }
 
     public function destroy(int $id): RedirectResponse
     {
         if (Auth::id() === $id) {
-            return back()->with('error', 'O\'z hisobingizni o\'chira olmaysiz.');
+            return back()->with('error', __('common.user_cannot_delete_self'));
         }
 
         try {
             $deleted = $this->userService->delete($id);
 
             if (! $deleted) {
-                return back()->with('error', 'Foydalanuvchi topilmadi yoki o\'chirilmadi.');
+                return back()->with('error', __('common.user_cannot_delete'));
             }
 
-            return redirect()->route('users.index')->with('success', 'Foydalanuvchi muvaffaqiyatli o\'chirildi.');
+            return redirect()->route('users.index')->with('success', __('common.user_deleted'));
         } catch (\Throwable) {
-            return back()->with('error', 'Ushbu foydalanuvchiga bog\'langan zakazlar mavjud bo\'lgani uchun uni o\'chirib bo\'lmaydi.');
+            return back()->with('error', __('common.user_cannot_delete_has_orders'));
         }
     }
 }

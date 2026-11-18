@@ -6,11 +6,20 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
+// Tilni almashtirish (GET /locale/{locale})
+Route::get('/locale/{locale}', [LocalizationController::class, 'switch'])
+    ->where('locale', 'uz|uz_Cyrl|ru')
+    ->name('locale.switch');
+Route::get('/lang/{locale}', [LocalizationController::class, 'switch'])
+    ->where('locale', 'uz|uz_Cyrl|ru')
+    ->name('lang.switch');
 
 // Auth Routes (Session login)
 Route::middleware('guest')->group(function () {

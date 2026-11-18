@@ -21,17 +21,29 @@ class DatabaseSeeder extends Seeder
     {
         // 1. 3 ta Region
         $yunusobod = Region::create([
-            'name' => 'Yunusobod filiali',
+            'name' => [
+                'uz' => 'Yunusobod filiali',
+                'ru' => 'Юнусабадский филиал',
+                'uz_Cyrl' => 'Юнусобод филиали',
+            ],
             'is_active' => true,
         ]);
 
         $chilonzor = Region::create([
-            'name' => 'Chilonzor filiali',
+            'name' => [
+                'uz' => 'Chilonzor filiali',
+                'ru' => 'Чиланзарский филиал',
+                'uz_Cyrl' => 'Чилонзор филиали',
+            ],
             'is_active' => true,
         ]);
 
         $mirzoUlugbek = Region::create([
-            'name' => "Mirzo Ulug'bek filiali",
+            'name' => [
+                'uz' => "Mirzo Ulug'bek filiali",
+                'ru' => 'Мирзо-Улугбекский филиал',
+                'uz_Cyrl' => 'Мирзо Улуғбек филиали',
+            ],
             'is_active' => true,
         ]);
 
@@ -39,25 +51,33 @@ class DatabaseSeeder extends Seeder
 
         // 2. 4 ta Category
         $cat1 = Category::create([
-            'name' => 'Standart yuvish (kuzov)',
+            'name_uz' => 'Standart yuvish (kuzov)',
+            'name_ru' => 'Стандартная мойка (кузов)',
+            'name_crl' => 'Стандарт ювиш (кузов)',
             'price' => 45000.00,
             'is_active' => true,
         ]);
 
         $cat2 = Category::create([
-            'name' => 'Kuzov + Salon',
+            'name_uz' => 'Kuzov + Salon',
+            'name_ru' => 'Кузов + Салон',
+            'name_crl' => 'Кузов + Салон',
             'price' => 75000.00,
             'is_active' => true,
         ]);
 
         $cat3 = Category::create([
-            'name' => 'Kompleks VIP yuvish',
+            'name_uz' => 'Kompleks VIP yuvish',
+            'name_ru' => 'Комплексная VIP мойка',
+            'name_crl' => 'Комплекс VIP ювиш',
             'price' => 130000.00,
             'is_active' => true,
         ]);
 
         $cat4 = Category::create([
-            'name' => 'Deteyling va Kimtozalash',
+            'name_uz' => 'Deteyling va Kimtozalash',
+            'name_ru' => 'Детейлинг и химчистка',
+            'name_crl' => 'Детейлинг ва кимтозалаш',
             'price' => 280000.00,
             'is_active' => true,
         ]);

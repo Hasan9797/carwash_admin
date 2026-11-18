@@ -1,24 +1,24 @@
 <x-app-layout :breadcrumbs="[
-    ['label' => 'Dashboard', 'url' => route('dashboard')],
-    ['label' => 'Zakazlar', 'url' => route('orders.index')],
-    ['label' => 'Yangi zakaz'],
+    ['label' => __('common.dashboard'), 'url' => route('dashboard')],
+    ['label' => __('common.orders'), 'url' => route('orders.index')],
+    ['label' => __('orders.new_order')],
 ]">
     <x-slot name="header">
-        Yangi zakaz qabul qilish
+        {{ __('orders.create_title') }}
     </x-slot>
 
     <div class="max-w-3xl mx-auto">
         <div class="mb-6 flex items-center justify-between">
             <div>
-                <h2 class="text-xl font-bold text-slate-900">Yangi zakaz ochish</h2>
-                <p class="text-xs text-slate-500">Kameradan o'tgan yoki qo'lda kiritilgan avtomobilga zakaz rasmiylashtirish</p>
+                <h2 class="text-xl font-bold text-content">{{ __('orders.create_title') }}</h2>
+                <p class="text-xs text-muted">{{ __('orders.create_subtitle') }}</p>
             </div>
             <a href="{{ route('orders.index') }}">
                 <x-button variant="secondary" size="sm" class="gap-1.5">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    <span>Orqaga qaytish</span>
+                    <span>{{ __('common.back_to_list') }}</span>
                 </x-button>
             </a>
         </div>
@@ -29,31 +29,31 @@
 
                 <!-- Mashina raqamini kiritish usuli (Tab / Switcher) -->
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
-                        1. Avtomobil raqamini kiritish usuli
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-muted mb-2">
+                        {{ __('orders.step_1_plate_input') }}
                     </label>
-                    <div class="grid grid-cols-2 gap-3 p-1 bg-slate-100 rounded-xl">
+                    <div class="grid grid-cols-2 gap-3 p-1 bg-surface-2 rounded-xl border border-border">
                         <button 
                             type="button" 
                             @click="plateMode = 'camera'"
-                            :class="plateMode === 'camera' ? 'bg-white text-blue-600 shadow-sm font-semibold' : 'text-slate-600 hover:text-slate-900'"
+                            :class="plateMode === 'camera' ? 'bg-surface text-primary shadow-sm font-semibold border border-border/60' : 'text-muted hover:text-content'"
                             class="py-2.5 px-3 rounded-lg text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
                         >
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
-                            <span>Kameradan aniqlangan (<span x-text="recentCars.length"></span>)</span>
+                            <span>{{ __('orders.select_from_camera') }} (<span x-text="recentCars.length"></span>)</span>
                         </button>
                         <button 
                             type="button" 
                             @click="plateMode = 'manual'"
-                            :class="plateMode === 'manual' ? 'bg-white text-blue-600 shadow-sm font-semibold' : 'text-slate-600 hover:text-slate-900'"
+                            :class="plateMode === 'manual' ? 'bg-surface text-primary shadow-sm font-semibold border border-border/60' : 'text-muted hover:text-content'"
                             class="py-2.5 px-3 rounded-lg text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
                         >
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
-                            <span>Qo'lda kiritish</span>
+                            <span>{{ __('orders.manual_entry') }}</span>
                         </button>
                     </div>
                     <input type="hidden" name="plate_mode" :value="plateMode">
@@ -62,68 +62,68 @@
                 <!-- Usul 1: Kameradan o'tgan mashinalar ro'yxati -->
                 <div x-show="plateMode === 'camera'" class="space-y-3">
                     <div class="flex items-center justify-between">
-                        <label class="block text-xs font-medium text-slate-700">Oxirgi kelgan mashinalar</label>
+                        <label class="block text-xs font-medium text-content">{{ __('orders.camera_select_hint') }}</label>
                         <input 
                             type="text" 
                             x-model="carSearch" 
-                            placeholder="Ro'yxatdan qidirish..." 
-                            class="text-xs px-2.5 py-1 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500"
+                            placeholder="{{ __('common.search') }}..." 
+                            class="text-xs px-2.5 py-1 rounded-lg border border-border bg-surface text-content placeholder:text-muted focus:outline-none focus:border-primary"
                         />
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto p-1 border border-slate-200 rounded-xl bg-slate-50">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto p-1 border border-border rounded-xl bg-surface-2/40">
                         <template x-for="car in filteredCars" :key="car.id">
                             <button
                                 type="button"
                                 @click="selectedCarId = car.id"
-                                :class="selectedCarId == car.id ? 'border-blue-600 bg-blue-50/80 ring-2 ring-blue-500/20' : 'border-slate-200 bg-white hover:border-slate-300'"
+                                :class="selectedCarId == car.id ? 'border-primary bg-primary-soft ring-2 ring-primary/20' : 'border-border bg-surface hover:border-primary/40'"
                                 class="p-3 rounded-lg border text-left transition-all cursor-pointer"
                             >
                                 <div class="flex items-center justify-between mb-1">
-                                    <span class="font-mono font-bold text-sm text-slate-900" x-text="car.plate_number"></span>
-                                    <span class="text-[10px] text-slate-400 font-mono" x-text="car.time"></span>
+                                    <span class="font-mono font-bold text-sm text-content" x-text="car.plate_number"></span>
+                                    <span class="text-[10px] text-muted font-mono" x-text="car.time"></span>
                                 </div>
-                                <span class="text-[10px] text-slate-500" x-text="car.camera_id"></span>
+                                <span class="text-[10px] text-muted" x-text="car.camera_id"></span>
                             </button>
                         </template>
 
-                        <div x-show="filteredCars.length === 0" class="col-span-full py-8 text-center text-xs text-slate-400">
-                            Mos mashina topilmadi. Agar mashina kamerada ko'rinmagan bo'lsa, "Qo'lda kiritish" rejimidan foydalaning.
+                        <div x-show="filteredCars.length === 0" class="col-span-full py-8 text-center text-xs text-muted">
+                            {{ __('orders.no_recent_camera_cars') }}
                         </div>
                     </div>
                     <input type="hidden" name="car_id" :value="selectedCarId">
                     @error('car_id')
-                        <p class="text-xs text-rose-600">{{ $message }}</p>
+                        <p class="text-xs text-danger">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Usul 2: Qo'lda raqam kiritish -->
                 <div x-show="plateMode === 'manual'" class="space-y-2">
                     <x-input 
-                        label="Avtomobil davlat raqami" 
+                        label="{{ __('orders.car_number_label') }}" 
                         name="plate_number" 
                         x-model="manualPlate" 
-                        placeholder="Masalan: 01A777AA yoki 10B123BA" 
+                        placeholder="01A777AA" 
                         class="uppercase font-mono text-base tracking-wider"
                     />
-                    <p class="text-xs text-slate-400">Raqamni katta harflarda va bo'shliqlarsiz kiriting.</p>
+                    <p class="text-xs text-muted">{{ __('orders.plate_hint') }}</p>
                 </div>
 
-                <hr class="border-slate-100">
+                <hr class="border-border">
 
                 <!-- 2. Xizmat turi va Narx -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
                     <div class="sm:col-span-2">
                         <x-select 
-                            label="Yuvish xizmati turi" 
+                            label="{{ __('orders.service_type') }}" 
                             name="category_id" 
                             x-model="selectedCategory"
                             required
                         >
-                            <option value="">Tanlang...</option>
+                            <option value="">{{ __('orders.select_service') }}...</option>
                             @foreach($categories as $cat)
                                 <option value="{{ $cat->id }}">
-                                    {{ $cat->name }} ({{ number_format((float)$cat->price, 0, '.', ' ') }} so'm)
+                                    {{ $cat->name }} ({{ number_format((float)$cat->price, 0, '.', ' ') }} {{ __('common.sum') }})
                                 </option>
                             @endforeach
                         </x-select>
@@ -131,9 +131,9 @@
 
                     <!-- Avtomatik Narx Snapshot ko'rsatgichi -->
                     <div>
-                        <label class="block text-xs font-medium text-slate-500 mb-1.5">Hisoblangan narx</label>
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg px-3.5 py-2 text-right">
-                            <span class="text-base font-bold text-blue-700" x-text="currentPrice">0 so'm</span>
+                        <label class="block text-xs font-medium text-muted mb-1.5">{{ __('orders.order_price') }}</label>
+                        <div class="bg-primary-soft border border-primary/30 rounded-lg px-3.5 py-2 text-right">
+                            <span class="text-base font-bold text-primary" x-text="currentPrice">0 {{ __('common.sum') }}</span>
                         </div>
                     </div>
                 </div>
@@ -142,11 +142,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <x-select 
-                            label="Yuvuvchi xodim (Washer)" 
+                            label="{{ __('orders.washer_worker') }}" 
                             name="washer_id" 
                             required
                         >
-                            <option value="">Yuvuvchini tanlang...</option>
+                            <option value="">{{ __('orders.select_washer') }}...</option>
                             @foreach($washers as $w)
                                 <option value="{{ $w->id }}" {{ old('washer_id') == $w->id ? 'selected' : '' }}>
                                     {{ $w->name }} {{ $w->region ? '(' . $w->region->name . ')' : '' }}
@@ -159,7 +159,7 @@
                     <div>
                         @if(auth()->user()->isAdmin())
                             <x-select 
-                                label="Filial (Hudud)" 
+                                label="{{ __('common.regions') }}" 
                                 name="region_id" 
                                 required
                             >
@@ -170,9 +170,9 @@
                                 @endforeach
                             </x-select>
                         @else
-                            <label class="block text-xs font-medium text-slate-500 mb-1.5">Filial (Avtomatik)</label>
-                            <div class="bg-slate-100 border border-slate-200 rounded-lg px-3.5 py-2 text-sm text-slate-700 font-medium">
-                                {{ $operatorRegion?->name ?? 'Asosiy filial' }}
+                            <label class="block text-xs font-medium text-muted mb-1.5">{{ __('common.regions') }}</label>
+                            <div class="bg-surface-2 border border-border rounded-lg px-3.5 py-2 text-sm text-content font-medium">
+                                {{ $operatorRegion?->name ?? __('common.branches') }}
                             </div>
                             <input type="hidden" name="region_id" value="{{ $operatorRegion?->id ?? 1 }}">
                         @endif
@@ -180,15 +180,15 @@
                 </div>
 
                 <!-- Amallar -->
-                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-border">
                     <a href="{{ route('orders.index') }}">
-                        <x-button variant="secondary">Bekor qilish</x-button>
+                        <x-button variant="secondary">{{ __('common.cancel') }}</x-button>
                     </a>
                     <x-button type="submit" variant="primary" class="gap-2 px-6">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                         </svg>
-                        <span>Zakazni rasmiylashtirish</span>
+                        <span>{{ __('orders.save_order') }}</span>
                     </x-button>
                 </div>
             </form>

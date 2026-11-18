@@ -14,11 +14,11 @@
     };
 
     $variantClasses = match($variant) {
-        'secondary' => 'bg-slate-100 text-slate-700 hover:bg-slate-200 focus:ring-slate-400 border border-slate-200',
-        'danger' => 'bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500 shadow-sm',
-        'success' => 'bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-500 shadow-sm',
-        'outline' => 'bg-transparent text-slate-700 hover:bg-slate-50 border border-slate-300 focus:ring-blue-500',
-        default => 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm',
+        'secondary' => 'bg-surface-2 text-content hover:bg-border/60 focus:ring-ring border border-border',
+        'danger' => 'bg-danger text-white hover:bg-danger/90 focus:ring-danger shadow-sm',
+        'success' => 'bg-success text-white hover:bg-success/90 focus:ring-success shadow-sm',
+        'outline' => 'bg-transparent text-content hover:bg-surface-2 border border-border focus:ring-primary',
+        default => 'bg-primary text-primary-contrast hover:bg-primary-hover focus:ring-ring shadow-sm',
     };
 @endphp
 

@@ -33,7 +33,9 @@ class RegionService
     public function create(array $data): Region
     {
         return $this->regionRepository->create([
-            'name' => trim((string) $data['name']),
+            'name' => is_array($data['name'])
+                ? array_map(fn ($v) => trim((string) $v), $data['name'])
+                : trim((string) $data['name']),
             'is_active' => (bool) ($data['is_active'] ?? true),
         ]);
     }
@@ -41,7 +43,9 @@ class RegionService
     public function update(int $id, array $data): bool
     {
         return $this->regionRepository->update($id, [
-            'name' => trim((string) $data['name']),
+            'name' => is_array($data['name'])
+                ? array_map(fn ($v) => trim((string) $v), $data['name'])
+                : trim((string) $data['name']),
             'is_active' => (bool) ($data['is_active'] ?? true),
         ]);
     }

@@ -98,7 +98,7 @@ class OrderController extends Controller
         $dto = $request->toDto();
         $order = $this->orderService->create($dto);
 
-        return redirect()->route('orders.index')->with('success', "Zakaz (#{$order->id}) muvaffaqiyatli yaratildi.");
+        return redirect()->route('orders.index')->with('success', __('common.order_created', ['id' => $order->id]));
     }
 
     public function updateStatus(OrderStatusUpdateRequest $request, int $id): RedirectResponse
@@ -106,9 +106,9 @@ class OrderController extends Controller
         $updated = $this->orderService->updateStatus($id, $request->getStatus());
 
         if (! $updated) {
-            return back()->with('error', 'Zakaz topilmadi yoki status o\'zgartirilmadi.');
+            return back()->with('error', __('common.order_status_failed'));
         }
 
-        return back()->with('success', 'Zakaz holati muvaffaqiyatli yangilandi.');
+        return back()->with('success', __('common.order_status_updated'));
     }
 }

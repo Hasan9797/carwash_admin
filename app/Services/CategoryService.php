@@ -32,20 +32,66 @@ class CategoryService
 
     public function create(array $data): Category
     {
-        return $this->categoryRepository->create([
-            'name' => trim((string) $data['name']),
+        $payload = [
             'price' => (float) $data['price'],
             'is_active' => (bool) ($data['is_active'] ?? true),
-        ]);
+        ];
+
+        if (isset($data['name_uz'])) {
+            $payload['name_uz'] = trim((string) $data['name_uz']);
+            $payload['name_ru'] = ! empty($data['name_ru']) ? trim((string) $data['name_ru']) : null;
+            $payload['name_crl'] = ! empty($data['name_crl'])
+                ? trim((string) $data['name_crl'])
+                : (! empty($data['name_uz_Cyrl']) ? trim((string) $data['name_uz_Cyrl']) : null);
+        } elseif (isset($data['name']) && is_array($data['name'])) {
+            $payload['name_uz'] = trim((string) ($data['name']['uz'] ?? ''));
+            $payload['name_ru'] = ! empty($data['name']['ru']) ? trim((string) $data['name']['ru']) : null;
+            $payload['name_crl'] = ! empty($data['name']['uz_Cyrl'])
+                ? trim((string) $data['name']['uz_Cyrl'])
+                : (! empty($data['name']['crl']) ? trim((string) $data['name']['crl']) : null);
+        } elseif (isset($data['name'])) {
+            $payload['name_uz'] = trim((string) $data['name']);
+        }
+
+        if (array_key_exists('description', $data)) {
+            $payload['description'] = is_array($data['description'])
+                ? array_map(fn ($v) => trim((string) $v), $data['description'])
+                : (is_string($data['description']) ? trim($data['description']) : null);
+        }
+
+        return $this->categoryRepository->create($payload);
     }
 
     public function update(int $id, array $data): bool
     {
-        return $this->categoryRepository->update($id, [
-            'name' => trim((string) $data['name']),
+        $payload = [
             'price' => (float) $data['price'],
             'is_active' => (bool) ($data['is_active'] ?? true),
-        ]);
+        ];
+
+        if (isset($data['name_uz'])) {
+            $payload['name_uz'] = trim((string) $data['name_uz']);
+            $payload['name_ru'] = ! empty($data['name_ru']) ? trim((string) $data['name_ru']) : null;
+            $payload['name_crl'] = ! empty($data['name_crl'])
+                ? trim((string) $data['name_crl'])
+                : (! empty($data['name_uz_Cyrl']) ? trim((string) $data['name_uz_Cyrl']) : null);
+        } elseif (isset($data['name']) && is_array($data['name'])) {
+            $payload['name_uz'] = trim((string) ($data['name']['uz'] ?? ''));
+            $payload['name_ru'] = ! empty($data['name']['ru']) ? trim((string) $data['name']['ru']) : null;
+            $payload['name_crl'] = ! empty($data['name']['uz_Cyrl'])
+                ? trim((string) $data['name']['uz_Cyrl'])
+                : (! empty($data['name']['crl']) ? trim((string) $data['name']['crl']) : null);
+        } elseif (isset($data['name'])) {
+            $payload['name_uz'] = trim((string) $data['name']);
+        }
+
+        if (array_key_exists('description', $data)) {
+            $payload['description'] = is_array($data['description'])
+                ? array_map(fn ($v) => trim((string) $v), $data['description'])
+                : (is_string($data['description']) ? trim($data['description']) : null);
+        }
+
+        return $this->categoryRepository->update($id, $payload);
     }
 
     public function delete(int $id): bool

@@ -25,6 +25,7 @@ class User extends Authenticatable
         'phone',
         'region_id',
         'is_active',
+        'locale',
     ];
 
     protected $hidden = [

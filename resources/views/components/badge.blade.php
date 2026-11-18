@@ -4,12 +4,12 @@
 
 @php
     $classes = match($color) {
-        'emerald', 'green', 'success' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
-        'amber', 'yellow', 'warning' => 'bg-amber-50 text-amber-700 border-amber-200',
-        'rose', 'red', 'danger' => 'bg-rose-50 text-rose-700 border-rose-200',
-        'slate', 'gray' => 'bg-slate-50 text-slate-700 border-slate-200',
-        'indigo' => 'bg-indigo-50 text-indigo-700 border-indigo-200',
-        default => 'bg-blue-50 text-blue-700 border-blue-200',
+        'emerald', 'green', 'success' => 'bg-success-soft text-success border-success/30',
+        'amber', 'yellow', 'warning' => 'bg-warning-soft text-warning border-warning/30',
+        'rose', 'red', 'danger' => 'bg-danger-soft text-danger border-danger/30',
+        'slate', 'gray' => 'bg-surface-2 text-muted border-border',
+        'indigo', 'info' => 'bg-info-soft text-info border-info/30',
+        default => 'bg-primary-soft text-primary border-primary/30',
     };
 @endphp
 

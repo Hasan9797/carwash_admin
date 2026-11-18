@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\EnsureUserRole;
+use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\VerifyCameraWebhookToken;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->web(append: [
+            SetLocale::class,
+        ]);
+
         $middleware->alias([
             'role' => EnsureUserRole::class,
             'camera.token' => VerifyCameraWebhookToken::class,

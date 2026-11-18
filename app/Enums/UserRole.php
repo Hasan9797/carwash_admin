@@ -25,6 +25,11 @@ enum UserRole: int
                 self::OPERATOR => 'Оператор',
                 self::WASHER => 'Мойщик',
             },
+            'uz_Cyrl' => match ($this) {
+                self::ADMIN => 'Админ',
+                self::OPERATOR => 'Оператор',
+                self::WASHER => 'Ювувчи',
+            },
             default => match ($this) {
                 self::ADMIN => 'Admin',
                 self::OPERATOR => 'Operator',

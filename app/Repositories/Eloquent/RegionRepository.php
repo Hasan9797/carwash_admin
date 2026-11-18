@@ -13,17 +13,21 @@ class RegionRepository implements RegionRepositoryInterface
 {
     public function getAll(bool $onlyActive = false): Collection
     {
+        $locale = app()->getLocale();
+
         return Region::query()
             ->when($onlyActive, fn ($q) => $q->where('is_active', true))
-            ->orderBy('name')
+            ->orderBy("name->{$locale}")
             ->get();
     }
 
     public function paginate(int $perPage = 15): LengthAwarePaginator
     {
+        $locale = app()->getLocale();
+
         return Region::query()
             ->withCount('users')
-            ->orderBy('name')
+            ->orderBy("name->{$locale}")
             ->paginate($perPage);
     }
 

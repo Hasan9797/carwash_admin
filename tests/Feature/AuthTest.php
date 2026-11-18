@@ -71,3 +71,12 @@ test('admin can view users index page with breadcrumbs and title', function () {
         ->assertSee('Xodimlar va foydalanuvchilar')
         ->assertSee('<title>Foydalanuvchilar - ', false);
 });
+
+test('login page does not display test credentials or sinov hisoblari', function () {
+    $response = $this->get('/login');
+
+    $response->assertStatus(200)
+        ->assertDontSee('Sinov hisoblari')
+        ->assertDontSee('admin@example.com')
+        ->assertDontSee('operator1@example.com');
+});

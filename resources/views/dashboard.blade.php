@@ -1,13 +1,13 @@
-<x-app-layout title="Boshqaruv paneli">
+<x-app-layout :title="__('dashboard.title')">
     <x-slot name="header">
-        Boshqaruv paneli (Dashboard)
+        {{ __('dashboard.title') }}
     </x-slot>
 
     <!-- Yuqori qism: Xush kelibsiz va tezkor harakatlar -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h2 class="text-xl font-bold text-slate-900">Boshqaruv paneli</h2>
-            <p class="text-xs text-slate-500">Salom, {{ auth()->user()->name }}! 👋 Bugungi avtomoyka faoliyati va asosiy ko'rsatkichlar</p>
+            <h2 class="text-xl font-bold text-content">{{ __('dashboard.title') }}</h2>
+            <p class="text-xs text-muted">{{ __('dashboard.greeting', ['name' => auth()->user()->name]) }} {{ __('dashboard.subtitle') }}</p>
         </div>
         <div class="flex items-center gap-2">
             <a href="{{ route('orders.create') }}">
@@ -15,7 +15,7 @@
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                    <span>Yangi zakaz ochish</span>
+                    <span>{{ __('dashboard.open_order') }}</span>
                 </x-button>
             </a>
             <a href="{{ route('cars.index') }}">
@@ -23,7 +23,7 @@
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
-                    <span>Kamera</span>
+                    <span>{{ __('dashboard.camera') }}</span>
                 </x-button>
             </a>
         </div>
@@ -33,10 +33,10 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- 1. Barcha zakazlar soni -->
         <x-stat-card 
-            title="Barcha zakazlar" 
-            :value="$stats['total_orders_count'] . ' ta'"
+            :title="__('dashboard.total_orders')" 
+            :value="$stats['total_orders_count'] . ' ' . __('dashboard.pcs')"
             color="blue"
-            :subtext="($stats['done_orders_count'] ?? 0) . ' tasi muvaffaqiyatli yakunlangan'"
+            :subtext="__('dashboard.total_orders_subtext', ['count' => $stats['done_orders_count'] ?? 0])"
         >
             <x-slot name="icon">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -47,10 +47,10 @@
 
         <!-- 2. Bugun yuvilgan mashinalar -->
         <x-stat-card 
-            title="Bugun yuvilgan mashinalar" 
-            :value="$stats['today_washed_count'] . ' ta'"
+            :title="__('dashboard.today_orders')" 
+            :value="$stats['today_washed_count'] . ' ' . __('dashboard.pcs')"
             color="emerald"
-            subtext="Bugun muvaffaqiyatli yakunlangan"
+            :subtext="__('dashboard.today_orders_subtext')"
         >
             <x-slot name="icon">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,10 +61,10 @@
 
         <!-- 3. Umumiy tushum (Done) -->
         <x-stat-card 
-            title="Umumiy tushum" 
-            :value="number_format((float)$stats['total_amount_done'], 0, '.', ' ') . ' so\'m'"
+            :title="__('dashboard.total_revenue')" 
+            :value="format_money($stats['total_amount_done'])"
             color="blue"
-            subtext="Bajarilgan zakazlar bo'yicha"
+            :subtext="__('dashboard.total_revenue_subtext')"
         >
             <x-slot name="icon">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -75,10 +75,10 @@
 
         <!-- 4. Yuvuvchi xodimlar soni -->
         <x-stat-card 
-            title="Yuvuvchilar soni" 
-            :value="$stats['washers_count'] . ' nafar'"
+            :title="__('dashboard.active_washers')" 
+            :value="$stats['washers_count'] . ' ' . __('dashboard.persons')"
             color="emerald"
-            subtext="Avtomobil yuvuvchi xodimlar"
+            :subtext="__('dashboard.active_washers_subtext')"
         >
             <x-slot name="icon">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -89,10 +89,10 @@
 
         <!-- 5. Operatorlar soni -->
         <x-stat-card 
-            title="Operatorlar soni" 
-            :value="$stats['operators_count'] . ' nafar'"
+            :title="__('dashboard.operators_count')" 
+            :value="$stats['operators_count'] . ' ' . __('dashboard.persons')"
             color="indigo"
-            subtext="Zakaz qabul qiluvchilar"
+            :subtext="__('dashboard.operators_subtext')"
         >
             <x-slot name="icon">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -103,10 +103,10 @@
 
         <!-- 6. Adminlar soni -->
         <x-stat-card 
-            title="Adminlar soni" 
-            :value="$stats['admins_count'] . ' nafar'"
+            :title="__('dashboard.admins_count')" 
+            :value="$stats['admins_count'] . ' ' . __('dashboard.persons')"
             color="amber"
-            subtext="Tizim ma'murlari"
+            :subtext="__('dashboard.admins_subtext')"
         >
             <x-slot name="icon">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -117,7 +117,7 @@
     </div>
 
     <!-- Grafik: Oxirgi 7 kunlik yuvilgan mashinalar dinamikasi -->
-    <x-card title="Oxirgi 7 kunlik yuvilgan mashinalar statistikasi">
+    <x-card :title="__('dashboard.last_7_days_stats')">
         <div class="h-80 w-full" x-data="{
             chartData: {{ json_encode($chartData) }},
             init() {
@@ -127,7 +127,7 @@
                     data: {
                         labels: this.chartData.labels,
                         datasets: [{
-                            label: 'Yuvilgan mashinalar soni',
+                            label: '{{ addslashes(__('dashboard.washed_cars_chart_label')) }}',
                             data: this.chartData.values,
                             backgroundColor: 'rgba(37, 99, 235, 0.1)',
                             borderColor: 'rgb(37, 99, 235)',
@@ -149,7 +149,7 @@
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
-                                        return context.parsed.y + ' ta avtomobil';
+                                        return context.parsed.y + ' {{ addslashes(__('dashboard.chart_cars_unit')) }}';
                                     }
                                 }
                             }
@@ -174,6 +174,7 @@
                     }
                 });
             }
+        }">
         }">
             <canvas x-ref="canvas"></canvas>
         </div>

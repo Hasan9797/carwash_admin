@@ -33,14 +33,14 @@ class RegionController extends Controller
     {
         $this->regionService->create($request->validated());
 
-        return redirect()->route('regions.index')->with('success', 'Filial muvaffaqiyatli qo\'shildi.');
+        return redirect()->route('regions.index')->with('success', __('common.region_created'));
     }
 
     public function edit(int $id): View|RedirectResponse
     {
         $region = $this->regionService->getById($id);
         if (! $region) {
-            return redirect()->route('regions.index')->with('error', 'Filial topilmadi.');
+            return redirect()->route('regions.index')->with('error', __('common.region_not_found'));
         }
 
         return view('regions.edit', [
@@ -53,10 +53,10 @@ class RegionController extends Controller
         $updated = $this->regionService->update($id, $request->validated());
 
         if (! $updated) {
-            return back()->with('error', 'Filialni yangilab bo\'lmadi.');
+            return back()->with('error', __('common.region_cannot_update'));
         }
 
-        return redirect()->route('regions.index')->with('success', 'Filial muvaffaqiyatli yangilandi.');
+        return redirect()->route('regions.index')->with('success', __('common.region_updated'));
     }
 
     public function destroy(int $id): RedirectResponse
@@ -65,12 +65,12 @@ class RegionController extends Controller
             $deleted = $this->regionService->delete($id);
 
             if (! $deleted) {
-                return back()->with('error', 'Filialni o\'chirib bo\'lmadi.');
+                return back()->with('error', __('common.region_cannot_delete'));
             }
 
-            return redirect()->route('regions.index')->with('success', 'Filial muvaffaqiyatli o\'chirildi.');
+            return redirect()->route('regions.index')->with('success', __('common.region_deleted'));
         } catch (\Throwable) {
-            return back()->with('error', 'Ushbu filialga bog\'langan zakazlar yoki xodimlar mavjud bo\'lgani uchun uni o\'chirib bo\'lmaydi.');
+            return back()->with('error', __('common.region_cannot_delete_has_relations'));
         }
     }
 }

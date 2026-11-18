@@ -8,20 +8,20 @@
 
 @php
     $colorClasses = match($color) {
-        'emerald', 'green' => 'bg-emerald-50 text-emerald-600 border-emerald-100',
-        'amber', 'yellow' => 'bg-amber-50 text-amber-600 border-amber-100',
-        'indigo' => 'bg-indigo-50 text-indigo-600 border-indigo-100',
-        'rose', 'red' => 'bg-rose-50 text-rose-600 border-rose-100',
-        default => 'bg-blue-50 text-blue-600 border-blue-100',
+        'emerald', 'green', 'success' => 'bg-success-soft text-success border-success/30',
+        'amber', 'yellow', 'warning' => 'bg-warning-soft text-warning border-warning/30',
+        'indigo', 'info' => 'bg-info-soft text-info border-info/30',
+        'rose', 'red', 'danger' => 'bg-danger-soft text-danger border-danger/30',
+        default => 'bg-primary-soft text-primary border-primary/30',
     };
 @endphp
 
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex items-start justify-between">
+<div class="bg-surface rounded-xl shadow-sm border border-border p-6 flex items-start justify-between text-content">
     <div class="space-y-1">
-        <p class="text-xs font-medium uppercase tracking-wider text-slate-500">{{ $title }}</p>
-        <p class="text-2xl font-bold text-slate-900">{{ $value }}</p>
+        <p class="text-xs font-medium uppercase tracking-wider text-muted">{{ $title }}</p>
+        <p class="text-2xl font-bold text-content">{{ $value }}</p>
         @if($subtext)
-            <p class="text-xs text-slate-500 pt-1">{{ $subtext }}</p>
+            <p class="text-xs text-muted pt-1">{{ $subtext }}</p>
         @endif
     </div>
     @if($icon)

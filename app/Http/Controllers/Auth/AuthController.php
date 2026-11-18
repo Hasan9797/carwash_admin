@@ -34,7 +34,7 @@ class AuthController extends Controller
 
         if (! Auth::attempt($credentials, $remember)) {
             return back()->withInput($request->only('email', 'remember'))->withErrors([
-                'email' => 'Kiritilgan ma\'lumotlar bo\'yicha faol foydalanuvchi topilmadi.',
+                'email' => __('auth.active_user_not_found'),
             ]);
         }
 
@@ -46,11 +46,15 @@ class AuthController extends Controller
             $request->session()->regenerateToken();
 
             return back()->withInput($request->only('email'))->withErrors([
-                'email' => 'Yuvuvchi (Washer) hisobi bilan tizimga kirish taqiqlangan.',
+                'email' => __('auth.washer_login_forbidden'),
             ]);
         }
 
         $request->session()->regenerate();
+
+        if ($user->locale) {
+            $request->session()->put('locale', $user->locale);
+        }
 
         return redirect()->intended(route('dashboard'));
     }
