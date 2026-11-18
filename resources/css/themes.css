@@ -1,5 +1,6 @@
 :root,
 [data-theme="light"] {
+    color-scheme: light;
     --bg: 248 250 252;
     --surface: 255 255 255;
     --surface-2: 241 245 249;
@@ -18,4 +19,93 @@
     --danger-soft: 255 241 242;
     --info: 14 165 233;
     --info-soft: 240 249 255;
+    --table-header-bg: 241 245 249;
+    --table-row-hover: 248 250 252;
+    --ring: 37 99 235;
+}
+
+[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: 15 23 42;
+    --surface: 30 41 59;
+    --surface-2: 39 52 73;
+    --border: 51 65 85;
+    --text: 226 232 240;
+    --text-muted: 148 163 184;
+    --primary: 59 130 246;
+    --primary-hover: 96 165 250;
+    --primary-contrast: 255 255 255;
+    --primary-soft: 30 58 95;
+    --success: 52 211 153;
+    --success-soft: 6 78 59;
+    --warning: 251 191 36;
+    --warning-soft: 69 26 3;
+    --danger: 248 113 113;
+    --danger-soft: 69 10 10;
+    --info: 56 189 248;
+    --info-soft: 12 74 110;
+    --table-header-bg: 39 52 73;
+    --table-row-hover: 30 41 59;
+    --ring: 59 130 246;
+}
+
+[data-theme="cream"] {
+    color-scheme: light;
+    --bg: 250 245 236;
+    --surface: 255 253 248;
+    --surface-2: 243 234 217;
+    --border: 230 218 195;
+    --text: 59 47 32;
+    --text-muted: 138 122 98;
+    --primary: 183 121 31;
+    --primary-hover: 151 90 22;
+    --primary-contrast: 255 255 255;
+    --primary-soft: 250 236 212;
+    --success: 21 128 61;
+    --success-soft: 234 246 237;
+    --warning: 180 83 9;
+    --warning-soft: 254 243 199;
+    --danger: 185 28 28;
+    --danger-soft: 254 226 226;
+    --info: 3 105 161;
+    --info-soft: 224 242 254;
+    --table-header-bg: 243 234 217;
+    --table-row-hover: 246 238 221;
+    --ring: 183 121 31;
+}
+
+[data-theme="sky"] {
+    color-scheme: light;
+    --bg: 238 247 253;
+    --surface: 255 255 255;
+    --surface-2: 225 240 250;
+    --border: 201 226 242;
+    --text: 12 42 68;
+    --text-muted: 91 122 148;
+    --primary: 2 132 199;
+    --primary-hover: 3 105 161;
+    --primary-contrast: 255 255 255;
+    --primary-soft: 224 242 254;
+    --success: 5 150 105;
+    --success-soft: 220 252 231;
+    --warning: 217 119 6;
+    --warning-soft: 254 243 199;
+    --danger: 220 38 38;
+    --danger-soft: 254 226 226;
+    --info: 2 132 199;
+    --info-soft: 224 242 254;
+    --table-header-bg: 225 240 250;
+    --table-row-hover: 238 247 253;
+    --ring: 2 132 199;
+}
+
+body,
+header,
+aside,
+main,
+nav,
+.bg-surface,
+.bg-surface-2,
+.border-border {
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }

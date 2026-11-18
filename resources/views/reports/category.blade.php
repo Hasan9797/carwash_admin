@@ -58,12 +58,12 @@
 
     <!-- Xulosa kartalari -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <x-stat-card :title="__('reports.total_orders_count')" :value="$totalOrders . ' ' . __('dashboard.pcs')" color="blue" />
-        <x-stat-card :title="__('reports.total_revenue')" :value="format_money($totalAmount)" color="emerald" />
+        <x-stat-card :title="__('reports.total_orders_count')" :value="$totalOrders . ' ' . __('dashboard.pcs')" color="primary" />
+        <x-stat-card :title="__('reports.total_revenue')" :value="format_money($totalAmount)" color="success" />
         <x-stat-card 
             :title="__('reports.average_check')" 
             :value="format_money($totalOrders > 0 ? ($totalAmount / $totalOrders) : 0)" 
-            color="indigo" 
+            color="info" 
         />
     </div>
 

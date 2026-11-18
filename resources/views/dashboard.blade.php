@@ -119,9 +119,16 @@
     <!-- Grafik: Oxirgi 7 kunlik yuvilgan mashinalar dinamikasi -->
     <x-card :title="__('dashboard.last_7_days_stats')">
         <div class="h-80 w-full" x-data="{
-            chartData: {{ json_encode($chartData) }},
+            chartData: @js($chartData),
+            chartInstance: null,
             init() {
                 const ctx = this.$refs.canvas.getContext('2d');
+                this.renderChart(ctx);
+                window.addEventListener('theme-changed', () => {
+                    this.updateThemeColors();
+                });
+            },
+            getColors() {
                 const computed = getComputedStyle(document.documentElement);
                 const rawPrimary = (computed.getPropertyValue('--primary') || '37 99 235').trim();
                 const primaryColor = 'rgb(' + rawPrimary + ')';
@@ -132,20 +139,23 @@
                 const gridColor = 'rgba(' + borderChannels + ', 0.6)';
                 const rawMuted = (computed.getPropertyValue('--text-muted') || '100 116 139').trim();
                 const tickColor = 'rgb(' + rawMuted + ')';
-
-                new Chart(ctx, {
+                return { primaryColor, primaryFill, gridColor, tickColor };
+            },
+            renderChart(ctx) {
+                const colors = this.getColors();
+                this.chartInstance = new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: this.chartData.labels,
                         datasets: [{
                             label: '{{ addslashes(__('dashboard.washed_cars_chart_label')) }}',
                             data: this.chartData.values,
-                            backgroundColor: primaryFill,
-                            borderColor: primaryColor,
+                            backgroundColor: colors.primaryFill,
+                            borderColor: colors.primaryColor,
                             borderWidth: 2.5,
                             tension: 0.35,
                             fill: true,
-                            pointBackgroundColor: primaryColor,
+                            pointBackgroundColor: colors.primaryColor,
                             pointRadius: 4,
                             pointHoverRadius: 6
                         }]
@@ -171,15 +181,15 @@
                                 ticks: {
                                     stepSize: 1,
                                     precision: 0,
-                                    color: tickColor
+                                    color: colors.tickColor
                                 },
                                 grid: {
-                                    color: gridColor
+                                    color: colors.gridColor
                                 }
                             },
                             x: {
                                 ticks: {
-                                    color: tickColor
+                                    color: colors.tickColor
                                 },
                                 grid: {
                                     display: false
@@ -188,6 +198,26 @@
                         }
                     }
                 });
+            },
+            updateThemeColors() {
+                if (!this.chartInstance) return;
+                setTimeout(() => {
+                    const colors = this.getColors();
+                    const dataset = this.chartInstance.data.datasets[0];
+                    if (dataset) {
+                        dataset.backgroundColor = colors.primaryFill;
+                        dataset.borderColor = colors.primaryColor;
+                        dataset.pointBackgroundColor = colors.primaryColor;
+                    }
+                    if (this.chartInstance.options.scales.y) {
+                        this.chartInstance.options.scales.y.ticks.color = colors.tickColor;
+                        this.chartInstance.options.scales.y.grid.color = colors.gridColor;
+                    }
+                    if (this.chartInstance.options.scales.x) {
+                        this.chartInstance.options.scales.x.ticks.color = colors.tickColor;
+                    }
+                    this.chartInstance.update();
+                }, 50);
             }
         }">
             <canvas x-ref="canvas"></canvas>

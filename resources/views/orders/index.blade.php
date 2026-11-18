@@ -116,7 +116,7 @@
                     <td class="px-4 py-3 text-xs font-semibold text-muted">#{{ $order->id }}</td>
                     <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                            <span class="inline-flex items-center font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-slate-900 text-amber-400 text-xs border border-slate-700 shadow-xs">
+                            <span class="inline-flex items-center font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-surface-2 text-content text-xs border border-border shadow-2xs">
                                 {{ $order->plate_number }}
                             </span>
                             @if($order->car_id)

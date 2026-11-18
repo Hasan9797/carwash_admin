@@ -15,9 +15,10 @@
 
     $variantClasses = match($variant) {
         'secondary' => 'bg-surface-2 text-content hover:bg-border/60 focus:ring-ring border border-border',
-        'danger' => 'bg-danger text-white hover:bg-danger/90 focus:ring-danger shadow-sm',
-        'success' => 'bg-success text-white hover:bg-success/90 focus:ring-success shadow-sm',
+        'danger' => 'bg-danger text-primary-contrast hover:bg-danger/90 focus:ring-danger shadow-sm',
+        'success' => 'bg-success text-primary-contrast hover:bg-success/90 focus:ring-success shadow-sm',
         'outline' => 'bg-transparent text-content hover:bg-surface-2 border border-border focus:ring-primary',
+        'ghost' => 'bg-transparent text-content hover:bg-surface-2 focus:ring-ring',
         default => 'bg-primary text-primary-contrast hover:bg-primary-hover focus:ring-ring shadow-sm',
     };
 @endphp

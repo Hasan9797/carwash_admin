@@ -10,7 +10,7 @@
     <div class="max-w-4xl mx-auto space-y-6">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <span class="inline-flex items-center font-mono font-bold tracking-wider px-3 py-1 rounded bg-slate-900 text-amber-400 text-base border border-slate-700 shadow-sm">
+                <span class="inline-flex items-center font-mono font-bold tracking-wider px-3 py-1 rounded bg-surface-2 text-content text-base border border-border shadow-xs">
                     {{ $car->plate_number }}
                 </span>
                 <span class="text-xs text-muted">{{ __('cars.camera_id') }}: {{ $car->camera_id ?? __('cars.unknown') }}</span>

@@ -46,7 +46,7 @@
                 <tr class="hover:bg-table-hover transition-colors">
                     <td class="px-4 py-3 text-xs text-muted">#{{ $car->id }}</td>
                     <td class="px-4 py-3">
-                        <span class="inline-flex items-center font-mono font-bold tracking-wider px-2.5 py-1 rounded bg-slate-900 text-amber-400 text-xs border border-slate-700 shadow-xs">
+                        <span class="inline-flex items-center font-mono font-bold tracking-wider px-2.5 py-1 rounded bg-surface-2 text-content text-xs border border-border shadow-2xs">
                             {{ $car->plate_number }}
                         </span>
                     </td>

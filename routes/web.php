@@ -10,6 +10,7 @@ use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::post('/theme', [ThemeController::class, 'update'])->middleware('auth')->name('theme.update');
 
 // Protected Panel Routes (Faqat tizimga kirgan Admin va Operatorlar)
 Route::middleware(['auth', 'role:admin,operator'])->group(function () {

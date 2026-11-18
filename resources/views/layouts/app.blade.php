@@ -1,9 +1,37 @@
 <!DOCTYPE html>
-<html lang="{{ html_lang() }}" class="h-full bg-bg" data-theme="light">
+@php
+    $serverTheme = auth()->check() ? (auth()->user()->theme ?? null) : null;
+    $availableThemes = array_keys(config('themes.available', []));
+@endphp
+<html lang="{{ html_lang() }}" class="h-full bg-bg" data-theme="{{ $serverTheme ?? 'light' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Anti-FOUC Theme Initialization (CSS yuklanishidan oldin darhol o'rnatish) -->
+    <script>
+        (function() {
+            const availableThemes = @json($availableThemes);
+            const serverTheme = @json($serverTheme);
+            let theme = 'light';
+
+            if (serverTheme && availableThemes.includes(serverTheme)) {
+                theme = serverTheme;
+                try { localStorage.setItem('theme', serverTheme); } catch (e) {}
+            } else {
+                let localTheme = null;
+                try { localTheme = localStorage.getItem('theme'); } catch (e) {}
+                if (localTheme && availableThemes.includes(localTheme)) {
+                    theme = localTheme;
+                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && availableThemes.includes('dark')) {
+                    theme = 'dark';
+                }
+            }
+
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
 
     @php
         $pageTitle = $title ?? null;
@@ -185,6 +213,9 @@
                     </div>
 
                     <div class="flex items-center gap-2 sm:gap-3">
+                        <!-- Tema almashtirish (Theme Switcher Dropdown) -->
+                        <x-theme-switcher />
+
                         <!-- Til almashtirish (Language Switcher Dropdown) -->
                         <x-language-switcher />
 

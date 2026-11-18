@@ -32,6 +32,10 @@
 
     --color-info: rgb(var(--info));
     --color-info-soft: rgb(var(--info-soft));
+
+    --color-table-header: rgb(var(--table-header-bg));
+    --color-table-hover: rgb(var(--table-row-hover));
+    --color-ring: rgb(var(--ring));
 }
 
 @layer base {
