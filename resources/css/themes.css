@@ -1,0 +1,21 @@
+:root,
+[data-theme="light"] {
+    --bg: 248 250 252;
+    --surface: 255 255 255;
+    --surface-2: 241 245 249;
+    --border: 226 232 240;
+    --text: 15 23 42;
+    --text-muted: 100 116 139;
+    --primary: 37 99 235;
+    --primary-hover: 29 78 216;
+    --primary-contrast: 255 255 255;
+    --primary-soft: 239 246 255;
+    --success: 16 185 129;
+    --success-soft: 236 253 245;
+    --warning: 245 158 11;
+    --warning-soft: 254 243 199;
+    --danger: 239 68 68;
+    --danger-soft: 255 241 242;
+    --info: 14 165 233;
+    --info-soft: 240 249 255;
+}

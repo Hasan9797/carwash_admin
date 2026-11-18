@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ html_lang() }}" class="h-full bg-slate-50">
+<html lang="{{ html_lang() }}" class="h-full bg-bg" data-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,7 +34,7 @@
         };
     </script>
 </head>
-<body class="h-full font-sans antialiased text-slate-800" x-data="{ sidebarOpen: false }">
+<body class="h-full font-sans antialiased text-content bg-bg" x-data="{ sidebarOpen: false }">
     <div class="min-h-full flex">
         <!-- Mobil Sidebar Backdrop -->
         <div 
@@ -179,7 +179,7 @@
                         </button>
 
                         <div class="hidden sm:flex items-center gap-2 text-xs text-muted bg-surface-2 px-3 py-1.5 rounded-full border border-border/50">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
                             <span class="capitalize">{{ \Carbon\Carbon::now()->locale(carbon_locale())->isoFormat('dddd, D MMMM YYYY') }}</span>
                         </div>
                     </div>
@@ -190,7 +190,7 @@
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="h-9 flex items-center gap-1.5 px-2.5 sm:px-3 rounded-lg text-xs font-medium text-slate-600 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 transition-colors">
+                            <button type="submit" class="h-9 flex items-center gap-1.5 px-2.5 sm:px-3 rounded-lg text-xs font-medium text-muted hover:text-danger hover:bg-danger-soft border border-transparent hover:border-danger/20 transition-colors">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                 </svg>

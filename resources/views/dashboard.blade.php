@@ -35,7 +35,7 @@
         <x-stat-card 
             :title="__('dashboard.total_orders')" 
             :value="$stats['total_orders_count'] . ' ' . __('dashboard.pcs')"
-            color="blue"
+            color="primary"
             :subtext="__('dashboard.total_orders_subtext', ['count' => $stats['done_orders_count'] ?? 0])"
         >
             <x-slot name="icon">
@@ -49,7 +49,7 @@
         <x-stat-card 
             :title="__('dashboard.today_orders')" 
             :value="$stats['today_washed_count'] . ' ' . __('dashboard.pcs')"
-            color="emerald"
+            color="success"
             :subtext="__('dashboard.today_orders_subtext')"
         >
             <x-slot name="icon">
@@ -63,7 +63,7 @@
         <x-stat-card 
             :title="__('dashboard.total_revenue')" 
             :value="format_money($stats['total_amount_done'])"
-            color="blue"
+            color="primary"
             :subtext="__('dashboard.total_revenue_subtext')"
         >
             <x-slot name="icon">
@@ -77,7 +77,7 @@
         <x-stat-card 
             :title="__('dashboard.active_washers')" 
             :value="$stats['washers_count'] . ' ' . __('dashboard.persons')"
-            color="emerald"
+            color="success"
             :subtext="__('dashboard.active_washers_subtext')"
         >
             <x-slot name="icon">
@@ -91,7 +91,7 @@
         <x-stat-card 
             :title="__('dashboard.operators_count')" 
             :value="$stats['operators_count'] . ' ' . __('dashboard.persons')"
-            color="indigo"
+            color="info"
             :subtext="__('dashboard.operators_subtext')"
         >
             <x-slot name="icon">
@@ -105,7 +105,7 @@
         <x-stat-card 
             :title="__('dashboard.admins_count')" 
             :value="$stats['admins_count'] . ' ' . __('dashboard.persons')"
-            color="amber"
+            color="warning"
             :subtext="__('dashboard.admins_subtext')"
         >
             <x-slot name="icon">
@@ -122,6 +122,17 @@
             chartData: {{ json_encode($chartData) }},
             init() {
                 const ctx = this.$refs.canvas.getContext('2d');
+                const computed = getComputedStyle(document.documentElement);
+                const rawPrimary = (computed.getPropertyValue('--primary') || '37 99 235').trim();
+                const primaryColor = 'rgb(' + rawPrimary + ')';
+                const primaryChannels = rawPrimary.includes(',') ? rawPrimary : rawPrimary.split(/\s+/).join(', ');
+                const primaryFill = 'rgba(' + primaryChannels + ', 0.12)';
+                const rawBorder = (computed.getPropertyValue('--border') || '226 232 240').trim();
+                const borderChannels = rawBorder.includes(',') ? rawBorder : rawBorder.split(/\s+/).join(', ');
+                const gridColor = 'rgba(' + borderChannels + ', 0.6)';
+                const rawMuted = (computed.getPropertyValue('--text-muted') || '100 116 139').trim();
+                const tickColor = 'rgb(' + rawMuted + ')';
+
                 new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -129,12 +140,12 @@
                         datasets: [{
                             label: '{{ addslashes(__('dashboard.washed_cars_chart_label')) }}',
                             data: this.chartData.values,
-                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                            borderColor: 'rgb(37, 99, 235)',
+                            backgroundColor: primaryFill,
+                            borderColor: primaryColor,
                             borderWidth: 2.5,
                             tension: 0.35,
                             fill: true,
-                            pointBackgroundColor: 'rgb(37, 99, 235)',
+                            pointBackgroundColor: primaryColor,
                             pointRadius: 4,
                             pointHoverRadius: 6
                         }]
@@ -159,13 +170,17 @@
                                 beginAtZero: true,
                                 ticks: {
                                     stepSize: 1,
-                                    precision: 0
+                                    precision: 0,
+                                    color: tickColor
                                 },
                                 grid: {
-                                    color: 'rgba(226, 232, 240, 0.6)'
+                                    color: gridColor
                                 }
                             },
                             x: {
+                                ticks: {
+                                    color: tickColor
+                                },
                                 grid: {
                                     display: false
                                 }
@@ -174,7 +189,6 @@
                     }
                 });
             }
-        }">
         }">
             <canvas x-ref="canvas"></canvas>
         </div>

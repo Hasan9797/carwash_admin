@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './themes.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -7,34 +8,34 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
-    --color-bg: #f8fafc;
-    --color-surface: #ffffff;
-    --color-surface-2: #f1f5f9;
-    --color-surface2: #f1f5f9;
-    --color-border: #e2e8f0;
-    --color-content: #0f172a;
-    --color-muted: #64748b;
+    --color-bg: rgb(var(--bg));
+    --color-surface: rgb(var(--surface));
+    --color-surface-2: rgb(var(--surface-2));
+    --color-surface2: rgb(var(--surface-2));
+    --color-border: rgb(var(--border));
+    --color-content: rgb(var(--text));
+    --color-muted: rgb(var(--text-muted));
 
-    --color-primary: #2563eb;
-    --color-primary-hover: #1d4ed8;
-    --color-primary-contrast: #ffffff;
-    --color-primary-soft: #eff6ff;
+    --color-primary: rgb(var(--primary));
+    --color-primary-hover: rgb(var(--primary-hover));
+    --color-primary-contrast: rgb(var(--primary-contrast));
+    --color-primary-soft: rgb(var(--primary-soft));
 
-    --color-success: #10b981;
-    --color-success-soft: #ecfdf5;
+    --color-success: rgb(var(--success));
+    --color-success-soft: rgb(var(--success-soft));
 
-    --color-warning: #f59e0b;
-    --color-warning-soft: #fef3c7;
+    --color-warning: rgb(var(--warning));
+    --color-warning-soft: rgb(var(--warning-soft));
 
-    --color-danger: #ef4444;
-    --color-danger-soft: #fff1f2;
+    --color-danger: rgb(var(--danger));
+    --color-danger-soft: rgb(var(--danger-soft));
 
-    --color-info: #0ea5e9;
-    --color-info-soft: #f0f9ff;
+    --color-info: rgb(var(--info));
+    --color-info-soft: rgb(var(--info-soft));
+}
 
-    --color-table-header: #f8fafc;
-    --color-table-hover: #f8fafc;
-    --color-table-stripe: #f8fafc;
-
-    --color-ring: #2563eb;
+@layer base {
+    *, ::after, ::before, ::backdrop {
+        border-color: rgb(var(--border));
+    }
 }
