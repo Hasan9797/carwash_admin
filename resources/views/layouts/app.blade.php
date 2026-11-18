@@ -41,7 +41,8 @@
         }
         $pageTitle = $pageTitle ?? ($header ?? __('common.dashboard'));
     @endphp
-    <title>{{ $pageTitle }} - {{ config('app.name', 'Carwash') }}</title>
+    <title>{{ $pageTitle }} - {{ config('app.name', 'Carwash Pro') }}</title>
+    @include('partials.favicon')
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,13 +86,9 @@
         >
             <!-- Logo & Brand -->
             <div class="h-16 px-6 border-b border-border flex items-center justify-between">
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 font-bold text-lg text-content">
-                    <div class="w-9 h-9 rounded-lg bg-primary text-primary-contrast flex items-center justify-center shadow-sm">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                    </div>
-                    <span>Carwash <span class="text-primary">Pro</span></span>
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 font-bold text-lg text-content min-w-0">
+                    <img src="{{ asset('favicons/favicon.svg') }}" alt="Carwash Pro" width="36" height="36" class="h-9 w-9 shrink-0">
+                    <span class="truncate">Carwash <span class="text-primary">Pro</span></span>
                 </a>
                 <button class="lg:hidden p-1 text-muted hover:text-content" @click="sidebarOpen = false">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

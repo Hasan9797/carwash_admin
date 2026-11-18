@@ -24,7 +24,8 @@
         })();
     </script>
 
-    <title>{{ __('auth.page_title') }} - {{ config('app.name', 'Carwash') }}</title>
+    <title>{{ __('auth.page_title') }} - {{ config('app.name', 'Carwash Pro') }}</title>
+    @include('partials.favicon')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -39,11 +40,7 @@
     <div class="w-full max-w-md">
         <!-- Logo -->
         <div class="text-center mb-8">
-            <div class="inline-flex w-14 h-14 rounded-2xl bg-primary text-primary-contrast items-center justify-center shadow-md shadow-primary/20 mb-3">
-                <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-            </div>
+            <img src="{{ asset('favicons/favicon.svg') }}" alt="Carwash Pro" width="60" height="60" class="w-[60px] h-[60px] mx-auto mb-3 shrink-0 shadow-md shadow-primary/20">
             <h2 class="text-2xl font-bold text-content tracking-tight">{{ __('auth.app_title') }}</h2>
             <p class="text-sm text-muted mt-1">{{ __('auth.app_subtitle') }}</p>
         </div>
