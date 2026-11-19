@@ -180,7 +180,7 @@ test('category and region admin forms support creating with uz and ru inputs', f
         'is_active' => 1,
     ])->assertRedirect(route('regions.index'));
 
-    $createdRegion = Region::where('name->uz', 'Yunusobod filiali')->first();
+    $createdRegion = Region::where('name_uz', 'Yunusobod filiali')->first();
     expect($createdRegion)->not->toBeNull();
     expect($createdRegion->getTranslation('name', 'uz'))->toBe('Yunusobod filiali');
     expect($createdRegion->getTranslation('name', 'ru'))->toBe('Юнусабадский филиал');

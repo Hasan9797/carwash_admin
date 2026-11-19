@@ -21,29 +21,23 @@ class DatabaseSeeder extends Seeder
     {
         // 1. 3 ta Region
         $yunusobod = Region::create([
-            'name' => [
-                'uz' => 'Yunusobod filiali',
-                'ru' => 'Юнусабадский филиал',
-                'uz_Cyrl' => 'Юнусобод филиали',
-            ],
+            'name_uz' => 'Yunusobod filiali',
+            'name_ru' => 'Юнусабадский филиал',
+            'name_crl' => 'Юнусобод филиали',
             'is_active' => true,
         ]);
 
         $chilonzor = Region::create([
-            'name' => [
-                'uz' => 'Chilonzor filiali',
-                'ru' => 'Чиланзарский филиал',
-                'uz_Cyrl' => 'Чилонзор филиали',
-            ],
+            'name_uz' => 'Chilonzor filiali',
+            'name_ru' => 'Чиланзарский филиал',
+            'name_crl' => 'Чилонзор филиали',
             'is_active' => true,
         ]);
 
         $mirzoUlugbek = Region::create([
-            'name' => [
-                'uz' => "Mirzo Ulug'bek filiali",
-                'ru' => 'Мирзо-Улугбекский филиал',
-                'uz_Cyrl' => 'Мирзо Улуғбек филиали',
-            ],
+            'name_uz' => "Mirzo Ulug'bek filiali",
+            'name_ru' => 'Мирзо-Улугбекский филиал',
+            'name_crl' => 'Мирзо Улуғбек филиали',
             'is_active' => true,
         ]);
 

@@ -13,6 +13,9 @@ return [
     'password_label' => 'Password',
     'remember_me' => 'Remember Me',
     'sign_in' => 'Sign In',
+    'banner_badge' => 'Automated System',
+    'banner_title' => 'Carwash Pro',
+    'banner_subtitle' => 'Modern platform for managing car wash operations, client flow, and financial accounting.',
     'active_user_not_found' => 'No active user found with the given credentials.',
     'washer_login_forbidden' => 'Login with a washer account is forbidden.',
 ];

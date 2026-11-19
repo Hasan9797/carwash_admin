@@ -152,11 +152,18 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function reportByRegion(ReportFilterDTO $filter): Collection
     {
+        $locale = app()->getLocale();
+        $titleExpression = match ($locale) {
+            'ru' => "COALESCE(NULLIF(regions.name_ru, ''), regions.name_uz)",
+            'uz_Cyrl', 'crl' => "COALESCE(NULLIF(regions.name_crl, ''), regions.name_uz)",
+            default => 'regions.name_uz',
+        };
+
         $query = DB::table('orders')
             ->join('regions', 'orders.region_id', '=', 'regions.id')
             ->select([
                 'regions.id',
-                'regions.name as title',
+                DB::raw("{$titleExpression} as title"),
                 DB::raw('COUNT(orders.id) as orders_count'),
                 DB::raw('COALESCE(SUM(orders.price), 0) as total_amount'),
                 DB::raw('COALESCE(AVG(orders.price), 0) as average_amount'),
@@ -165,25 +172,27 @@ class OrderRepository implements OrderRepositoryInterface
 
         $this->applyReportFilters($query, $filter);
 
-        return $query->groupBy('regions.id', 'regions.name')
+        return $query->groupBy('regions.id', 'regions.name_uz', 'regions.name_ru', 'regions.name_crl')
             ->orderByDesc('total_amount')
-            ->get()
-            ->map(function ($row) {
-                $row->title = $this->decodeTranslatable($row->title);
-
-                return $row;
-            });
+            ->get();
     }
 
     public function reportByOperator(ReportFilterDTO $filter): Collection
     {
+        $locale = app()->getLocale();
+        $regionNameExpression = match ($locale) {
+            'ru' => "COALESCE(NULLIF(regions.name_ru, ''), regions.name_uz)",
+            'uz_Cyrl', 'crl' => "COALESCE(NULLIF(regions.name_crl, ''), regions.name_uz)",
+            default => 'regions.name_uz',
+        };
+
         $query = DB::table('orders')
             ->join('users', 'orders.operator_id', '=', 'users.id')
             ->leftJoin('regions', 'orders.region_id', '=', 'regions.id')
             ->select([
                 'users.id',
                 'users.name as title',
-                'regions.name as region_name',
+                DB::raw("{$regionNameExpression} as region_name"),
                 DB::raw('COUNT(orders.id) as orders_count'),
                 DB::raw('COALESCE(SUM(orders.price), 0) as total_amount'),
                 DB::raw('COALESCE(AVG(orders.price), 0) as average_amount'),
@@ -192,25 +201,27 @@ class OrderRepository implements OrderRepositoryInterface
 
         $this->applyReportFilters($query, $filter);
 
-        return $query->groupBy('users.id', 'users.name', 'regions.name')
+        return $query->groupBy('users.id', 'users.name', 'regions.id', 'regions.name_uz', 'regions.name_ru', 'regions.name_crl')
             ->orderByDesc('total_amount')
-            ->get()
-            ->map(function ($row) {
-                $row->region_name = $this->decodeTranslatable($row->region_name);
-
-                return $row;
-            });
+            ->get();
     }
 
     public function reportByWasher(ReportFilterDTO $filter): Collection
     {
+        $locale = app()->getLocale();
+        $regionNameExpression = match ($locale) {
+            'ru' => "COALESCE(NULLIF(regions.name_ru, ''), regions.name_uz)",
+            'uz_Cyrl', 'crl' => "COALESCE(NULLIF(regions.name_crl, ''), regions.name_uz)",
+            default => 'regions.name_uz',
+        };
+
         $query = DB::table('orders')
             ->join('users', 'orders.washer_id', '=', 'users.id')
             ->leftJoin('regions', 'orders.region_id', '=', 'regions.id')
             ->select([
                 'users.id',
                 'users.name as title',
-                'regions.name as region_name',
+                DB::raw("{$regionNameExpression} as region_name"),
                 DB::raw('COUNT(orders.id) as orders_count'),
                 DB::raw('COALESCE(SUM(orders.price), 0) as total_amount'),
                 DB::raw('COALESCE(AVG(orders.price), 0) as average_amount'),
@@ -219,14 +230,9 @@ class OrderRepository implements OrderRepositoryInterface
 
         $this->applyReportFilters($query, $filter);
 
-        return $query->groupBy('users.id', 'users.name', 'regions.name')
+        return $query->groupBy('users.id', 'users.name', 'regions.id', 'regions.name_uz', 'regions.name_ru', 'regions.name_crl')
             ->orderByDesc('total_amount')
-            ->get()
-            ->map(function ($row) {
-                $row->region_name = $this->decodeTranslatable($row->region_name);
-
-                return $row;
-            });
+            ->get();
     }
 
     protected function decodeTranslatable(?string $value): string

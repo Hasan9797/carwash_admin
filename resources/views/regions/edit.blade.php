@@ -41,19 +41,19 @@
 
                     <!-- UZ Inputs -->
                     <div x-show="activeTab === 'uz'" class="space-y-4">
-                        <x-input label="{{ __('regions.region_name') }} (UZ)" name="name_uz" :value="old('name_uz', old('name.uz', $region->getTranslation('name', 'uz', false)))" required placeholder="{{ __('regions.region_name_placeholder') }}" />
+                        <x-input label="{{ __('regions.region_name') }} (UZ)" name="name_uz" :value="old('name_uz', old('name.uz', $region->name_uz))" required placeholder="{{ __('regions.region_name_placeholder') }}" />
                     </div>
 
                     <!-- UZ_CYRL Inputs -->
                     <div x-show="activeTab === 'uz_Cyrl'" style="display: none;" class="space-y-4">
                         <p class="text-[11px] text-muted italic">Кириллча номи киритилмаса, автоматик тарзда лотинчаси (UZ) кўрсатилади.</p>
-                        <x-input label="{{ __('regions.region_name') }} (ЎЗ)" name="name_uz_Cyrl" :value="old('name_uz_Cyrl', old('name.uz_Cyrl', $region->getTranslation('name', 'uz_Cyrl', false)))" placeholder="Масалан: Сергели филиали" />
+                        <x-input label="{{ __('regions.region_name') }} (ЎЗ)" name="name_uz_Cyrl" :value="old('name_uz_Cyrl', old('name_crl', old('name.uz_Cyrl', $region->name_crl)))" placeholder="Масалан: Сергели филиали" />
                     </div>
 
                     <!-- RU Inputs -->
                     <div x-show="activeTab === 'ru'" style="display: none;" class="space-y-4">
                         <p class="text-[11px] text-muted italic">Русча номи киритилмаса, автоматик тарзда лотинчаси (UZ) кўрсатилади.</p>
-                        <x-input label="{{ __('regions.region_name') }} (RU)" name="name_ru" :value="old('name_ru', old('name.ru', $region->getTranslation('name', 'ru', false)))" placeholder="Например: Сергелийский филиал" />
+                        <x-input label="{{ __('regions.region_name') }} (RU)" name="name_ru" :value="old('name_ru', old('name.ru', $region->name_ru))" placeholder="Например: Сергелийский филиал" />
                     </div>
                 </div>
 

@@ -32,22 +32,52 @@ class RegionService
 
     public function create(array $data): Region
     {
-        return $this->regionRepository->create([
-            'name' => is_array($data['name'])
-                ? array_map(fn ($v) => trim((string) $v), $data['name'])
-                : trim((string) $data['name']),
+        $payload = [
             'is_active' => (bool) ($data['is_active'] ?? true),
-        ]);
+        ];
+
+        if (isset($data['name_uz'])) {
+            $payload['name_uz'] = trim((string) $data['name_uz']);
+            $payload['name_ru'] = ! empty($data['name_ru']) ? trim((string) $data['name_ru']) : null;
+            $payload['name_crl'] = ! empty($data['name_crl'])
+                ? trim((string) $data['name_crl'])
+                : (! empty($data['name_uz_Cyrl']) ? trim((string) $data['name_uz_Cyrl']) : null);
+        } elseif (isset($data['name']) && is_array($data['name'])) {
+            $payload['name_uz'] = trim((string) ($data['name']['uz'] ?? ''));
+            $payload['name_ru'] = ! empty($data['name']['ru']) ? trim((string) $data['name']['ru']) : null;
+            $payload['name_crl'] = ! empty($data['name']['uz_Cyrl'])
+                ? trim((string) $data['name']['uz_Cyrl'])
+                : (! empty($data['name']['crl']) ? trim((string) $data['name']['crl']) : null);
+        } elseif (isset($data['name'])) {
+            $payload['name_uz'] = trim((string) $data['name']);
+        }
+
+        return $this->regionRepository->create($payload);
     }
 
     public function update(int $id, array $data): bool
     {
-        return $this->regionRepository->update($id, [
-            'name' => is_array($data['name'])
-                ? array_map(fn ($v) => trim((string) $v), $data['name'])
-                : trim((string) $data['name']),
+        $payload = [
             'is_active' => (bool) ($data['is_active'] ?? true),
-        ]);
+        ];
+
+        if (isset($data['name_uz'])) {
+            $payload['name_uz'] = trim((string) $data['name_uz']);
+            $payload['name_ru'] = ! empty($data['name_ru']) ? trim((string) $data['name_ru']) : null;
+            $payload['name_crl'] = ! empty($data['name_crl'])
+                ? trim((string) $data['name_crl'])
+                : (! empty($data['name_uz_Cyrl']) ? trim((string) $data['name_uz_Cyrl']) : null);
+        } elseif (isset($data['name']) && is_array($data['name'])) {
+            $payload['name_uz'] = trim((string) ($data['name']['uz'] ?? ''));
+            $payload['name_ru'] = ! empty($data['name']['ru']) ? trim((string) $data['name']['ru']) : null;
+            $payload['name_crl'] = ! empty($data['name']['uz_Cyrl'])
+                ? trim((string) $data['name']['uz_Cyrl'])
+                : (! empty($data['name']['crl']) ? trim((string) $data['name']['crl']) : null);
+        } elseif (isset($data['name'])) {
+            $payload['name_uz'] = trim((string) $data['name']);
+        }
+
+        return $this->regionRepository->update($id, $payload);
     }
 
     public function delete(int $id): bool

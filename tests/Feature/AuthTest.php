@@ -80,3 +80,24 @@ test('login page does not display test credentials or sinov hisoblari', function
         ->assertDontSee('admin@example.com')
         ->assertDontSee('operator1@example.com');
 });
+
+test('login page renders split layout with banner image and localized texts', function () {
+    $response = $this->get('/login');
+    $response->assertStatus(200)
+        ->assertSee('images/blue-car-wash-stockcake.jpg')
+        ->assertSee(__('auth.banner_title', [], 'uz_Cyrl'))
+        ->assertSee(__('auth.banner_badge', [], 'uz_Cyrl'))
+        ->assertSee(__('auth.app_title', [], 'uz_Cyrl'))
+        ->assertSee(__('auth.email', [], 'uz_Cyrl'))
+        ->assertSee(__('auth.sign_in', [], 'uz_Cyrl'));
+
+    foreach (['uz', 'uz_Cyrl', 'ru', 'en'] as $locale) {
+        app()->setLocale($locale);
+        $rendered = view('auth.login')->render();
+        expect($rendered)
+            ->toContain('images/blue-car-wash-stockcake.jpg')
+            ->toContain(__('auth.banner_badge', [], $locale))
+            ->toContain(__('auth.banner_title', [], $locale))
+            ->toContain(__('auth.app_title', [], $locale));
+    }
+});

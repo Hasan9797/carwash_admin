@@ -16,8 +16,12 @@ class RegionFactory extends Factory
 
     public function definition(): array
     {
+        $city = fake()->city();
+
         return [
-            'name' => fake()->city().' filiali',
+            'name_uz' => $city.' filiali',
+            'name_ru' => $city.' филиал',
+            'name_crl' => $city.' филиали',
             'is_active' => true,
         ];
     }
