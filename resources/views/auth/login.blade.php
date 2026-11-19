@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 @php
     $availableThemes = array_keys(config('themes.available', []));
+    $defaultTheme = config('themes.default', 'light');
 @endphp
-<html lang="{{ html_lang() }}" class="h-full bg-bg" data-theme="light">
+<html lang="{{ html_lang() }}" class="h-full bg-bg" data-theme="{{ $defaultTheme }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Anti-FOUC Theme Initialization (Login sahifasi uchun localStorage'dan) -->
+    <!-- Anti-FOUC Theme Initialization (Login sahifasi uchun) -->
     <script>
         (function() {
             const availableThemes = @json($availableThemes);
-            let theme = 'light';
+            let theme = @json($defaultTheme);
             let localTheme = null;
             try { localTheme = localStorage.getItem('theme'); } catch (e) {}
             if (localTheme && availableThemes.includes(localTheme)) {
@@ -32,11 +33,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-full flex items-center justify-center p-4 bg-bg text-content relative">
-    <!-- Login sahifasida tema tanlagich -->
-    <div class="fixed top-4 right-4 z-50">
-        <x-theme-switcher />
-    </div>
-
     <div class="w-full max-w-md">
         <!-- Logo -->
         <div class="text-center mb-8">

@@ -64,7 +64,7 @@
     </script>
 </head>
 <body class="h-full font-sans antialiased text-content bg-bg" x-data="{ sidebarOpen: false }">
-    <div class="min-h-full flex">
+    <div class="min-h-screen">
         <!-- Mobil Sidebar Backdrop -->
         <div 
             x-show="sidebarOpen" 
@@ -82,10 +82,10 @@
         <!-- Sidebar -->
         <aside 
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-            class="fixed inset-y-0 left-0 z-50 w-64 bg-surface border-r border-border transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto flex flex-col"
+            class="fixed inset-y-0 left-0 z-50 lg:z-30 w-64 h-screen h-[100dvh] bg-surface border-r border-border transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col"
         >
             <!-- Logo & Brand -->
-            <div class="h-16 px-6 border-b border-border flex items-center justify-between">
+            <div class="h-16 px-6 border-b border-border flex items-center justify-between shrink-0">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-3 font-bold text-lg text-content min-w-0">
                     <img src="{{ asset('favicons/favicon.svg') }}" alt="Carwash Pro" width="36" height="36" class="h-9 w-9 shrink-0">
                     <span class="truncate">Carwash <span class="text-primary">Pro</span></span>
@@ -178,9 +178,9 @@
             </div>
 
             <!-- Foydalanuvchi qismi (pastda) -->
-            <div class="p-4 border-t border-border bg-surface-2/40">
+            <div class="p-4 border-t border-border bg-surface-2/40 mt-auto shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-primary-soft text-primary font-bold flex items-center justify-center text-sm border border-primary/20">
+                    <div class="w-10 h-10 rounded-full bg-primary-soft text-primary font-bold flex items-center justify-center text-sm border border-primary/20 shrink-0">
                         {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 2)) }}
                     </div>
                     <div class="flex-1 min-w-0">
@@ -192,9 +192,9 @@
         </aside>
 
         <!-- Asosiy kontent maydoni -->
-        <div class="flex-1 flex flex-col min-w-0">
+        <div class="lg:pl-64 flex flex-col min-h-screen min-w-0">
             <!-- Yuqori panel (Top bar) -->
-            <header class="h-16 bg-surface border-b border-border sticky top-0 z-30">
+            <header class="h-16 bg-surface border-b border-border sticky top-0 z-20">
                 <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
                     <div class="flex items-center gap-3 min-w-0">
                         <button class="lg:hidden p-2 text-muted hover:text-content rounded-lg hover:bg-surface-2 shrink-0" @click="sidebarOpen = true">
@@ -230,7 +230,7 @@
             </header>
 
             <!-- Sahifa asosiy qismi -->
-            <main class="flex-1 overflow-y-auto">
+            <main class="flex-1">
                 <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 py-6 space-y-6">
                     <!-- Flash Alerts -->
                     @if(session('success'))

@@ -73,4 +73,12 @@ class ThemeTest extends TestCase
             }
         }
     }
+
+    public function test_login_page_does_not_contain_theme_switcher(): void
+    {
+        $response = $this->get('/login');
+
+        $response->assertOk();
+        $response->assertDontSee('themeSwitcher');
+    }
 }
