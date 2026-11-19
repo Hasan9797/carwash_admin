@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,6 +17,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->unsignedTinyInteger('role')->default(UserRole::OPERATOR->value)->index();
+            $table->string('phone', 30)->nullable();
+            $table->foreignId('region_id')->nullable()->constrained('regions')->nullOnDelete();
+            $table->boolean('is_active')->default(true);
             $table->string('password')->nullable();
             $table->string('locale', 10)->default('uz');
             $table->string('theme', 20)->default('light');
