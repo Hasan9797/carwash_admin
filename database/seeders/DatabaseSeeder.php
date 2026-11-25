@@ -85,6 +85,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => UserRole::ADMIN,
             'phone' => '+998901234567',
+            'chat_id' => env('SEEDER_ADMIN_CHAT_ID'),
             'region_id' => $yunusobod->id,
             'is_active' => true,
         ]);
@@ -117,6 +118,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => UserRole::WASHER,
             'phone' => '+998935550101',
+            'chat_id' => env('SEEDER_WASHER_CHAT_ID'),
             'region_id' => $yunusobod->id,
             'is_active' => true,
         ]);
@@ -220,6 +222,8 @@ class DatabaseSeeder extends Seeder
                 'category_id' => $category->id,
                 'operator_id' => $operator->id,
                 'washer_id' => $washer->id,
+                'washer_name' => $washer->name,
+                'washer_phone' => $washer->phone,
                 'region_id' => $region->id,
                 'price' => $category->price,
                 'status' => $status,

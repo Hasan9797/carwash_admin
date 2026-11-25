@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('plate_number', 32);
             $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
             $table->foreignId('operator_id')->constrained('users')->restrictOnDelete();
-            $table->foreignId('washer_id')->constrained('users')->restrictOnDelete();
+            $table->foreignId('washer_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('washer_name')->nullable();
+            $table->string('washer_phone', 30)->nullable();
             $table->foreignId('region_id')->constrained('regions')->restrictOnDelete();
             $table->decimal('price', 12, 2);
             $table->unsignedTinyInteger('status')->default(OrderStatus::NEW->value);

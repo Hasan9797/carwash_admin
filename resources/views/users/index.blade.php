@@ -84,7 +84,12 @@
                             {{ $u->role->label() }}
                         </x-badge>
                     </td>
-                    <td class="px-4 py-3 text-xs text-muted">{{ $u->phone ?? '—' }}</td>
+                    <td class="px-4 py-3 text-xs text-muted">
+                        <p>{{ $u->phone ?? '—' }}</p>
+                        @if($u->chat_id)
+                            <p class="text-[11px] text-primary/80 font-mono">TG: {{ $u->chat_id }}</p>
+                        @endif
+                    </td>
                     <td class="px-4 py-3 text-xs text-muted">{{ $u->region?->name ?? '—' }}</td>
                     <td class="px-4 py-3">
                         <span class="inline-flex items-center gap-1.5 text-xs font-medium {{ $u->is_active ? 'text-success' : 'text-muted' }}">

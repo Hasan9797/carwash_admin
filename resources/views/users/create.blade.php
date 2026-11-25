@@ -46,8 +46,10 @@
                         @endforeach
                     </x-select>
 
-                    <x-input label="{{ __('users.password_login_hint') }}" name="password" type="password" placeholder="{{ __('users.password_min_hint') }}" />
+                    <x-input label="Telegram Chat ID" name="chat_id" placeholder="123456789 (ixtiyoriy)" />
                 </div>
+
+                <x-input label="{{ __('users.password_login_hint') }}" name="password" type="password" placeholder="{{ __('users.password_min_hint') }}" />
 
                 <div class="flex items-center gap-2 pt-2">
                     <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }} class="rounded border-border text-primary focus:ring-primary/20 bg-surface">

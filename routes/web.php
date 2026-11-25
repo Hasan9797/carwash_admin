@@ -61,9 +61,11 @@ Route::middleware(['auth', 'role:admin,operator'])->group(function () {
         Route::get('/washer/export', [ReportController::class, 'exportWasher'])->name('washer.export');
     });
 
+    // Foydalanuvchilar boshqaruvi (Admin va Operator)
+    Route::resource('users', UserController::class);
+
     // Faqat Administrator uchun ruxsat etilgan CRUD'lar
     Route::middleware('role:admin')->group(function () {
-        Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
         Route::resource('regions', RegionController::class);
     });

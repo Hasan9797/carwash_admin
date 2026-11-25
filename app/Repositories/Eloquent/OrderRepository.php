@@ -216,11 +216,11 @@ class OrderRepository implements OrderRepositoryInterface
         };
 
         $query = DB::table('orders')
-            ->join('users', 'orders.washer_id', '=', 'users.id')
+            ->leftJoin('users', 'orders.washer_id', '=', 'users.id')
             ->leftJoin('regions', 'orders.region_id', '=', 'regions.id')
             ->select([
-                'users.id',
-                'users.name as title',
+                DB::raw('COALESCE(users.id, 0) as id'),
+                DB::raw("COALESCE(users.name, orders.washer_name, '—') as title"),
                 DB::raw("{$regionNameExpression} as region_name"),
                 DB::raw('COUNT(orders.id) as orders_count'),
                 DB::raw('COALESCE(SUM(orders.price), 0) as total_amount'),
@@ -230,7 +230,7 @@ class OrderRepository implements OrderRepositoryInterface
 
         $this->applyReportFilters($query, $filter);
 
-        return $query->groupBy('users.id', 'users.name', 'regions.id', 'regions.name_uz', 'regions.name_ru', 'regions.name_crl')
+        return $query->groupBy('users.id', 'users.name', 'orders.washer_name', 'regions.id', 'regions.name_uz', 'regions.name_ru', 'regions.name_crl')
             ->orderByDesc('total_amount')
             ->get();
     }

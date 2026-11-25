@@ -21,9 +21,11 @@ class UserRepository implements UserRepositoryInterface
                 $q->where(function ($sub) use ($search) {
                     $sub->where('name', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%")
-                        ->orWhere('phone', 'like', "%{$search}%");
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('chat_id', 'like', "%{$search}%");
                 });
             })
+            ->when(! empty($filters['exclude_admin']), fn ($q) => $q->where('role', '!=', UserRole::ADMIN->value))
             ->when(! empty($filters['role']), function ($q) use ($filters) {
                 $raw = $filters['role'];
                 if (is_numeric($raw)) {

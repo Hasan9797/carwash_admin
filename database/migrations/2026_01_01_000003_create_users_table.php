@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->unsignedTinyInteger('role')->default(UserRole::OPERATOR->value)->index();
             $table->string('phone', 30)->nullable();
+            $table->string('chat_id', 64)->nullable()->unique();
             $table->foreignId('region_id')->nullable()->constrained('regions')->nullOnDelete();
             $table->boolean('is_active')->default(true);
             $table->string('password')->nullable();

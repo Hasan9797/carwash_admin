@@ -11,6 +11,8 @@ use App\Models\Car;
 use App\Models\Order;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\OrderRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Services\Telegram\TelegramService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,6 +24,8 @@ class OrderService
         protected OrderRepositoryInterface $orderRepository,
         protected CategoryRepositoryInterface $categoryRepository,
         protected DashboardService $dashboardService,
+        protected UserRepositoryInterface $userRepository,
+        protected TelegramService $telegramService,
     ) {}
 
     public function paginate(OrderFilterDTO $filter): LengthAwarePaginator
@@ -42,14 +46,17 @@ class OrderService
         }
 
         $normalizedPlate = Car::normalizePlateNumber($dto->plateNumber);
+        $washer = $this->userRepository->findById($dto->washerId);
 
-        return DB::transaction(function () use ($dto, $category, $normalizedPlate) {
+        $order = DB::transaction(function () use ($dto, $category, $washer, $normalizedPlate) {
             $order = $this->orderRepository->create([
                 'car_id' => $dto->carId,
                 'plate_number' => $normalizedPlate,
                 'category_id' => $category->id,
                 'operator_id' => $dto->operatorId,
                 'washer_id' => $dto->washerId,
+                'washer_name' => $washer?->name,
+                'washer_phone' => $washer?->phone,
                 'region_id' => $dto->regionId,
                 'price' => $category->price,
                 'status' => OrderStatus::NEW,
@@ -61,6 +68,16 @@ class OrderService
 
             return $order;
         });
+
+        if ($washer && ! empty($washer->chat_id)) {
+            try {
+                $this->telegramService->sendOrderAssignedNotification($order, $washer);
+            } catch (\Throwable $e) {
+                Log::warning('Telegram notification error: ' . $e->getMessage());
+            }
+        }
+
+        return $order;
     }
 
     public function updateStatus(int $id, OrderStatus $status): bool

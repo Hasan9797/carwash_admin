@@ -20,12 +20,24 @@ class Order extends Model
         'category_id',
         'operator_id',
         'washer_id',
+        'washer_name',
+        'washer_phone',
         'region_id',
         'price',
         'status',
         'started_at',
         'finished_at',
     ];
+
+    public function getWasherDisplayNameAttribute(): string
+    {
+        return $this->washer?->name ?? $this->washer_name ?? '—';
+    }
+
+    public function getWasherDisplayPhoneAttribute(): ?string
+    {
+        return $this->washer?->phone ?? $this->washer_phone ?? null;
+    }
 
     protected function casts(): array
     {

@@ -139,7 +139,7 @@
                     <span>{{ __('common.reports') }}</span>
                 </a>
 
-                @if(auth()->user()?->isAdmin())
+                @if(auth()->user()?->isAdmin() || auth()->user()?->isOperator())
                     <div class="pt-4 pb-1">
                         <p class="px-3 text-xs font-semibold uppercase tracking-wider text-muted">{{ __('common.system_administration') }}</p>
                     </div>
@@ -153,7 +153,9 @@
                         </svg>
                         <span>{{ __('common.users') }}</span>
                     </a>
+                @endif
 
+                @if(auth()->user()?->isAdmin())
                     <a 
                         href="{{ route('categories.index') }}" 
                         class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('categories.*') ? 'bg-primary-soft text-primary font-semibold' : 'text-muted hover:bg-surface-2 hover:text-content' }}"

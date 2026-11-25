@@ -51,12 +51,14 @@ test('washer cannot login to the dashboard', function () {
     $this->assertGuest();
 });
 
-test('operator cannot access admin-only users crud', function () {
+test('operator can access users list but cannot access admin-only categories crud', function () {
     $operator = User::factory()->operator()->create();
 
-    $response = $this->actingAs($operator)->get('/users');
+    $responseUsers = $this->actingAs($operator)->get('/users');
+    $responseUsers->assertStatus(200);
 
-    $response->assertStatus(403);
+    $responseCategories = $this->actingAs($operator)->get('/categories');
+    $responseCategories->assertStatus(403);
 });
 
 test('admin can view users index page with breadcrumbs and title', function () {

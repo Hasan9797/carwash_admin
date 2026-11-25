@@ -131,7 +131,7 @@
                     <td class="px-4 py-3 font-medium text-content">{{ $order->category->name }}</td>
                     <td class="px-4 py-3 font-semibold text-content whitespace-nowrap">{{ format_money($order->price) }}</td>
                     <td class="px-4 py-3 text-xs text-muted">
-                        <p><span class="text-muted/70">{{ __('orders.washer') }}:</span> <strong class="text-content">{{ $order->washer->name }}</strong></p>
+                        <p><span class="text-muted/70">{{ __('orders.washer') }}:</span> <strong class="text-content">{{ $order->washer_display_name }}</strong></p>
                         <p><span class="text-muted/70">{{ __('orders.operator') }}:</span> <span class="text-content">{{ $order->operator->name }}</span></p>
                     </td>
                     <td class="px-4 py-3 text-xs text-content">{{ $order->region->name }}</td>

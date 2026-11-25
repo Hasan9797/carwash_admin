@@ -22,30 +22,42 @@ class UserController extends Controller
 
     public function index(Request $request): View
     {
+        $actor = Auth::user();
         $filters = [
             'search' => $request->input('search'),
             'role' => $request->input('role'),
             'region_id' => $request->input('region_id'),
         ];
 
+        if ($actor?->isOperator()) {
+            $filters['exclude_admin'] = true;
+        }
+
         $users = $this->userService->paginate($filters, 15);
         $regions = $this->regionService->listActive();
+        $roles = $actor?->isOperator()
+            ? [UserRole::OPERATOR, UserRole::WASHER]
+            : UserRole::cases();
 
         return view('users.index', [
             'users' => $users,
             'regions' => $regions,
-            'roles' => UserRole::cases(),
+            'roles' => $roles,
             'filters' => $filters,
         ]);
     }
 
     public function create(): View
     {
+        $actor = Auth::user();
+        $roles = $actor?->isOperator()
+            ? [UserRole::OPERATOR, UserRole::WASHER]
+            : UserRole::cases();
         $regions = $this->regionService->listActive();
 
         return view('users.create', [
             'regions' => $regions,
-            'roles' => UserRole::cases(),
+            'roles' => $roles,
         ]);
     }
 
@@ -63,17 +75,30 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('error', __('common.user_not_found'));
         }
 
+        $this->authorizeAdminUserAccess($user);
+
+        $actor = Auth::user();
+        $roles = $actor?->isOperator()
+            ? [UserRole::OPERATOR, UserRole::WASHER]
+            : UserRole::cases();
         $regions = $this->regionService->listActive();
 
         return view('users.edit', [
             'user' => $user,
             'regions' => $regions,
-            'roles' => UserRole::cases(),
+            'roles' => $roles,
         ]);
     }
 
     public function update(UserRequest $request, int $id): RedirectResponse
     {
+        $user = $this->userService->getById($id);
+        if (! $user) {
+            return redirect()->route('users.index')->with('error', __('common.user_not_found'));
+        }
+
+        $this->authorizeAdminUserAccess($user);
+
         $updated = $this->userService->update($id, $request->validated());
 
         if (! $updated) {
@@ -89,6 +114,13 @@ class UserController extends Controller
             return back()->with('error', __('common.user_cannot_delete_self'));
         }
 
+        $user = $this->userService->getById($id);
+        if (! $user) {
+            return redirect()->route('users.index')->with('error', __('common.user_not_found'));
+        }
+
+        $this->authorizeAdminUserAccess($user);
+
         try {
             $deleted = $this->userService->delete($id);
 
@@ -98,7 +130,15 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('success', __('common.user_deleted'));
         } catch (\Throwable) {
-            return back()->with('error', __('common.user_cannot_delete_has_orders'));
+            return back()->with('error', __('common.user_cannot_delete'));
+        }
+    }
+
+    protected function authorizeAdminUserAccess(\App\Models\User $targetUser): void
+    {
+        $actor = Auth::user();
+        if ($actor?->isOperator() && $targetUser->isAdmin()) {
+            abort(403, "Operator administrator hisobini ko'rish yoki o'zgartirish huquqiga ega emas.");
         }
     }
 }

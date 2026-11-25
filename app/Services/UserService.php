@@ -44,6 +44,7 @@ class UserService
             'email' => strtolower(trim((string) $data['email'])),
             'role' => $this->resolveRole($data['role'] ?? null),
             'phone' => ! empty($data['phone']) ? trim((string) $data['phone']) : null,
+            'chat_id' => ! empty($data['chat_id']) ? trim((string) $data['chat_id']) : null,
             'region_id' => ! empty($data['region_id']) ? (int) $data['region_id'] : null,
             'is_active' => (bool) ($data['is_active'] ?? true),
         ];
@@ -64,6 +65,7 @@ class UserService
             'email' => strtolower(trim((string) $data['email'])),
             'role' => $this->resolveRole($data['role'] ?? null),
             'phone' => ! empty($data['phone']) ? trim((string) $data['phone']) : null,
+            'chat_id' => ! empty($data['chat_id']) ? trim((string) $data['chat_id']) : null,
             'region_id' => ! empty($data['region_id']) ? (int) $data['region_id'] : null,
             'is_active' => (bool) ($data['is_active'] ?? true),
         ];

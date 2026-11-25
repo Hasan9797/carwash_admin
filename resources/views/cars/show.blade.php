@@ -77,7 +77,7 @@
                         <td class="px-4 py-3 font-medium text-content">{{ $ord->category->name }}</td>
                         <td class="px-4 py-3 font-semibold text-content">{{ format_money($ord->price) }}</td>
                         <td class="px-4 py-3 text-xs text-muted">{{ $ord->operator->name }}</td>
-                        <td class="px-4 py-3 text-xs text-muted">{{ $ord->washer->name }}</td>
+                        <td class="px-4 py-3 text-xs text-muted">{{ $ord->washer?->name ?? $ord->washer_name ?? '—' }}</td>
                         <td class="px-4 py-3">
                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border {{ $ord->status->badgeClass() }}">
                                 {{ $ord->status->label() }}

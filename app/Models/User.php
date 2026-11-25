@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role',
         'phone',
+        'chat_id',
         'region_id',
         'is_active',
         'locale',
